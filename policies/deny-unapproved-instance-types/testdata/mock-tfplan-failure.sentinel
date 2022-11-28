@@ -6,7 +6,7 @@ resource_changes = {
 				"create",
 			],
 			"after": {
-				"instance_class":                      "db.m6.large",
+				"instance_class": "db.m6.large",
 			},
 		},
 		"deposed":        "",
