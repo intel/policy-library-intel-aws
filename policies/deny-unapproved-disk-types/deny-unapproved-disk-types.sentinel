@@ -1,0 +1,32 @@
+import "tfplan-functions" as plan
+allowed_storage = ["io1"]
+
+allInstances = plan.find_resources("aws_db_instance")
+
+violatingInstances = plan.filter_attribute_not_in_list(allInstances,
+	"storage_type", allowed_storage, true)
+
+violations = length(violatingInstances["messages"])
+
+// --------------------------------------------------------
+//                     _       _       _
+//                    (_)     | |     | |
+//                     _ _ __ | |_ ___| |
+//                    | | '_ \| __/ _ \ |
+//                    | | | | | ||  __/ |
+//                    |_|_| |_|\__\___|_|
+//
+// --------------------------------------------------------
+// Name:        deny-unapproved-disk-types.sentinel
+// Category:    Infrastructure (IaaS)
+// Provider:    hashicorp/aws
+// Resource:    aws_db_instance
+// Parameter:   storage_type
+//
+// Check:       storage_type does not contain: io1
+// --------------------------------------------------------
+//  The configured storage_type should io1 for better performance
+// --------------------------------------------------------
+main = rule {
+	violations is 0
+}
