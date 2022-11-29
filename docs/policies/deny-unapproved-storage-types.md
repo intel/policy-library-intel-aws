@@ -1,4 +1,4 @@
-# Ensure RDS instances are configured with a high performance disk type
+# Ensure RDS instances are configured with a high performance storage type
 
 | Provider            | Category                 |
 |---------------------|--------------------------|
@@ -6,13 +6,13 @@
 
 ## Description
 
-This Sentinel policy checks that the instances are configured with an `io1` disk type for better performance.
+This Sentinel policy checks that the instances are configured with an `io1` storage type for better performance.
 
 ## Policy Results (Pass)
 
 ```bash
     trace:
-      deny-unapproved-disk-types.sentinel:30:1 - Rule "main"
+      deny-unapproved-storage-types.sentinel:30:1 - Rule "main"
         Description:
           --------------------------------------------------------
                               _       _       _
@@ -23,7 +23,7 @@ This Sentinel policy checks that the instances are configured with an `io1` disk
                              |_|_| |_|\__\___|_|
 
           --------------------------------------------------------
-          Name:        deny-unapproved-disk-types.sentinel
+          Name:        deny-unapproved-storage-types.sentinel
           Category:    Infrastructure (IaaS)
           Provider:    hashicorp/aws
           Resource:    aws_db_instance
