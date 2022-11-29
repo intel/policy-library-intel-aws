@@ -9,7 +9,7 @@ db_instances = filter tfplan.resource_changes as _, rc {
 }
 
 # Rule to restrict instance_class types
-storage_encrypted = rule {
+storage_encryption_enabled = rule {
 	all db_instances as _, instance {
 		instance.change.after.storage_encrypted
 	}
@@ -35,5 +35,5 @@ storage_encrypted = rule {
 //  The RDS instance should utilize database encryption.
 // --------------------------------------------------------
 main = rule {
-	(storage_encrypted) else true
+	(storage_encryption_enabled) else true
 }
