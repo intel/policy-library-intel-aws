@@ -1,12 +1,20 @@
-import "tfplan-functions" as plan
-allowed_storage = ["io1"]
+import "tfplan/v2" as tfplan
 
-allInstances = plan.find_resources("aws_db_instance")
+# Get all db_instances instances from all modules
+db_instances = filter tfplan.resource_changes as _, rc {
+	rc.mode is "managed" and
+		rc.type is "aws_db_instance" and
+		(rc.change.actions contains "create" or
+			rc.change.actions is ["update"])
+}
 
-violatingInstances = plan.filter_attribute_not_in_list(allInstances,
-	"storage_type", allowed_storage, true)
+allowed_storage_types = ["io1"]
 
-violations = length(violatingInstances["messages"])
+storage_type_allowed = rule {
+	all db_instances as _, instance {
+		instance.change.after.storage_type in allowed_storage_types
+	}
+}
 
 // --------------------------------------------------------
 //                     _       _       _
@@ -17,7 +25,7 @@ violations = length(violatingInstances["messages"])
 //                    |_|_| |_|\__\___|_|
 //
 // --------------------------------------------------------
-// Name:        deny-unapproved-disk-types.sentinel
+// Name:        deny-unapproved-storage-types.sentinel
 // Category:    Infrastructure (IaaS)
 // Provider:    hashicorp/aws
 // Resource:    aws_db_instance
@@ -28,5 +36,5 @@ violations = length(violatingInstances["messages"])
 //  The configured storage_type should io1 for better performance
 // --------------------------------------------------------
 main = rule {
-	violations is 0
+	(storage_type_allowed) else true
 }
