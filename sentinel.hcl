@@ -12,3 +12,8 @@ policy "deny-unencrypted-database-instances" {
   source = "./policies/deny-unencrypted-database-instances/deny-unencrypted-database-instances.sentinel"
   enforcement_level = "soft-mandatory"
 }
+
+policy "deny-unapproved-vm-instances" {
+  source = "./policies/deny-unapproved-vm-instances/deny-unapproved-vm-instances.sentinel"
+  enforcement_level = "soft-mandatory"
+}
