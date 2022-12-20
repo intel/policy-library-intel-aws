@@ -1,6 +1,6 @@
 policy "deny-unapproved-instance-types" {
   source = "./policies/deny-unapproved-instance-types/deny-unapproved-instance-types.sentinel"
-  enforcement_level = "hard-mandatory"
+  enforcement_level = "soft-mandatory"
 }
 
 policy "deny-unapproved-storage-types" {
