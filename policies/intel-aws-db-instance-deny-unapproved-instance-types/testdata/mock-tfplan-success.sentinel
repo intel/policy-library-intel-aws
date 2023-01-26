@@ -1,0 +1,20 @@
+resource_changes = {
+	"module.intel-aws-deny-unapproved-instance-types-aws-db-instance.aws_db_instance.rds": {
+		"address": "module.intel-aws-deny-unapproved-instance-types-aws-db-instance.aws_db_instance.rds",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"instance_class": "db.m6i.large",
+			},
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "module.intel-aws-deny-unapproved-instance-types-aws-db-instance",
+		"name":           "rds",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_db_instance",
+	},
+}
