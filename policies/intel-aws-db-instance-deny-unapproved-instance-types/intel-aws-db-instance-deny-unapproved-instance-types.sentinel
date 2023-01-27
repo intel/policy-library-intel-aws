@@ -1,0 +1,127 @@
+import "tfplan/v2" as tfplan
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+format = {
+	"reset": "\033[0m",
+	"info":  "\033[32m",
+	"warn":  "\033[33m",
+	"error": "\033[31m",
+}
+
+summary = func(input, level) {
+	result = false
+	if input.violations is empty {
+		return true
+	} else {
+		log(input, format[level])
+	}
+	return result
+}
+
+log = func(input, output) {
+	header(input, output)
+	violations(input, output)
+	return null
+}
+
+header = func(input, output) {
+	print(
+		output + "\t========================================================================\n",
+		output + "\t                    _       _       _ \n",
+		output + "\t                   (_)     | |     | |\n",
+		output + "\t                    _ _ __ | |_ ___| |\n",
+		output + "\t                   | | '_ \\| __/ _ \\ |\n",
+		output + "\t                   | | | | | ||  __/ |\n",
+		output + "\t                   |_|_| |_|\\__\\___|_|\n",
+		output + "\t\n",
+		output + "\t========================================================================\n",
+		output + "\tName        :" + output + " " + "intel-aws-db-instance-deny-unapproved-instance-types.sentinel\n",
+		output + "\tCategory    :" + output + " " + "Infrastructure (IaaS)\n",
+		output + "\tProvider    :" + output + " " + "hashicorp/aws\n",
+		output + "\tResource    :" + output + " " + "aws_db_instance\n",
+		output + "\tParameter   :" + output + " " + "instance_class\n",
+		output + "\tCheck       :" + output + " " + "instance_class does not contain\n",
+		output + "\t\n",
+		output + "\t              db.m6i.large, db.m6i.xlarge\n",
+		output + "\t              db.m6i.2xlarge, db.m6i.4xlarge\n",
+		output + "\t              db.m6i.8xlarge, db.m6i.12xlarge\n",
+		output + "\t              db.m6i.16xlarge, db.m6i.24xlarge\n",
+		output + "\t              db.m6i.32xlarge, db.r6i.large\n",
+		output + "\t              db.r6i.xlarge, db.r6i.2xlarge\n",
+		output + "\t              db.r6i.4xlarge, db.r6i.8xlarge\n",
+		output + "\t              db.r6i.12xlarge, db.r6i.16xlarge\n",
+		output + "\t              db.r6i.24xlarge, db.r6i.32xlarge\n",
+	)
+	return null
+}
+
+violations = func(input, output) {
+	print(
+		output + "\t========================================================================\n",
+		output + "\tRESOURCE VIOLATIONS\n" + format.reset,
+		output + "\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
+		output + "\t========================================================================\t",
+	)
+	for input.violations as violation {
+		print(
+			"\t",
+			output + "name       :" + output + " " + violation.name + "\n\t",
+			output + "type       :" + output + " " + violation.type + "\n\t",
+			output + "address    :" + output + " " + violation.address + "\n\t",
+			output + "message    :" + output + " " + violation.message + "\t\n",
+			output + "\t------------------------------------------------------------------------\t",
+		)
+	}
+	if (input.violations is not empty) {
+		print(
+			output + "\t",
+			output + "Resources out of compliance: " + string(length(input.violations)) + "\n" + format.reset,
+			output + "\t------------------------------------------------------------------------\t",
+		)
+	}
+	return null
+}
+
+// Allowed server resource types
+allowed_server_types = ["db.m6i.large", "db.m6i.xlarge", "db.m6i.2xlarge", "db.m6i.4xlarge", "db.m6i.8xlarge", "db.m6i.12xlarge", "db.m6i.16xlarge", "db.m6i.24xlarge", "db.m6i.32xlarge", "db.r6i.large", "db.r6i.xlarge", "db.r6i.2xlarge", "db.r6i.4xlarge", "db.r6i.8xlarge", "db.r6i.12xlarge", "db.r6i.16xlarge", "db.r6i.24xlarge", "db.r6i.32xlarge"]
+
+doc = {
+	"id":       "awsdbinstance01",
+	"resource": "aws_db_instance",
+	"name":     "Server Type must be one of the approved instances",
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.instance_class not in allowed_server_types
+}
+
+// Build a summary report
+summaryreport = {
+	"id":   doc.id,
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.change.after.instance_class + " is not an allowed server type.",
+		}
+	},
+}
+
+main = rule {
+	summary(summaryreport, "warn")
+}
