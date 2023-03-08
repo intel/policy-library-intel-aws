@@ -17,3 +17,8 @@ policy "intel-aws-instance-deny-unapproved-instance-types" {
   source = "./policies/intel-aws-instance-deny-unapproved-instance-types/intel-aws-instance-deny-unapproved-instance-types.sentinel"
   enforcement_level = "soft-mandatory"
 }
+
+policy "intel-aws-launch-template-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-launch-template-deny-unapproved-instance-types/intel-aws-launch-template-deny-unapproved-instance-types.sentinel"
+  enforcement_level = "soft-mandatory"
+}

@@ -45,7 +45,7 @@ header = func(input, output) {
 		output + "\tProvider    :" + output + " " + "hashicorp/aws\n",
 		output + "\tResource    :" + output + " " + "aws_instance\n",
 		output + "\tParameter   :" + output + " " + "instance_type\n",
-		output + "\tCheck       :" + output + " " + "instance_type does not contain\n",
+		output + "\tCheck       :" + output + " " + "instance_type contains\n",
 		output + "\t\n",
 		output + "\tCompute Optimized:\n",
 		output + "\t             c6i.12xlarge, c6i.16xlarge\n",
