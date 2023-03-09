@@ -1,0 +1,81 @@
+resource_changes = {
+	"aws_eks_node_group.example": {
+		"address": "aws_eks_node_group.example",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"cluster_name":         "example",
+				"force_update_version": null,
+				"instance_types": [
+					"t3.medium",
+					"t3.large",
+				],
+				"labels":          null,
+				"launch_template": [],
+				"node_group_name": "example",
+				"node_role_arn":   "",
+				"remote_access":   [],
+				"scaling_config": [
+					{
+						"desired_size": 1,
+						"max_size":     2,
+						"min_size":     1,
+					},
+				],
+				"subnet_ids": [
+					"",
+					"",
+				],
+				"tags":     null,
+				"taint":    [],
+				"timeouts": null,
+				"update_config": [
+					{
+						"max_unavailable":            1,
+						"max_unavailable_percentage": null,
+					},
+				],
+			},
+			"after_unknown": {
+				"ami_type":      true,
+				"arn":           true,
+				"capacity_type": true,
+				"disk_size":     true,
+				"id":            true,
+				"instance_types": [
+					false,
+					false,
+				],
+				"launch_template":        [],
+				"node_group_name_prefix": true,
+				"release_version":        true,
+				"remote_access":          [],
+				"resources":              true,
+				"scaling_config": [
+					{},
+				],
+				"status": true,
+				"subnet_ids": [
+					false,
+					false,
+				],
+				"tags_all": true,
+				"taint":    [],
+				"update_config": [
+					{},
+				],
+				"version": true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "",
+		"name":           "example",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_eks_node_group",
+	},
+}

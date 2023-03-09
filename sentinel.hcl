@@ -1,3 +1,8 @@
+policy "intel-aws-autoscaling-group-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-autoscaling-group-deny-unapproved-instance-types/intel-aws-autoscaling-group-deny-unapproved-instance-types.sentinel"
+  enforcement_level = "soft-mandatory"
+}
+
 policy "intel-aws-db-instance-deny-unapproved-instance-types" {
   source = "./policies/intel-aws-db-instance-deny-unapproved-instance-types/intel-aws-db-instance-deny-unapproved-instance-types.sentinel"
   enforcement_level = "soft-mandatory"
@@ -10,6 +15,11 @@ policy "intel-aws-db-instance-deny-unapproved-storage-types" {
 
 policy "intel-aws-db-instance-deny-unencrypted-database" {
   source = "./policies/intel-aws-db-instance-deny-unencrypted-database/intel-aws-db-instance-deny-unencrypted-database.sentinel"
+  enforcement_level = "soft-mandatory"
+}
+
+policy "intel-aws-eks-node-group-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-eks-node-group-deny-unapproved-instance-types/intel-aws-eks-node-group-deny-unapproved-instance-types.sentinel"
   enforcement_level = "soft-mandatory"
 }
 

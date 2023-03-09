@@ -1,0 +1,136 @@
+resource_changes = {
+	"aws_autoscaling_group.bar": {
+		"address": "aws_autoscaling_group.bar",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"availability_zones": [
+					"us-east-1a",
+				],
+				"capacity_rebalance":        null,
+				"context":                   null,
+				"default_instance_warmup":   null,
+				"desired_capacity":          1,
+				"desired_capacity_type":     null,
+				"enabled_metrics":           null,
+				"force_delete":              false,
+				"force_delete_warm_pool":    false,
+				"health_check_grace_period": 300,
+				"initial_lifecycle_hook":    [],
+				"instance_refresh":          [],
+				"launch_configuration":      null,
+				"launch_template":           [],
+				"load_balancers":            null,
+				"max_instance_lifetime":     null,
+				"max_size":                  1,
+				"metrics_granularity":       "1Minute",
+				"min_elb_capacity":          null,
+				"min_size":                  1,
+				"mixed_instances_policy": [
+					{
+						"instances_distribution": [
+							{
+								"on_demand_base_capacity":                  0,
+								"on_demand_percentage_above_base_capacity": 25,
+								"spot_allocation_strategy":                 "capacity-optimized",
+								"spot_max_price":                           null,
+							},
+						],
+						"launch_template": [
+							{
+								"launch_template_specification": [
+									{
+										"version": "$Default",
+									},
+								],
+								"override": [
+									{
+										"instance_requirements":         [],
+										"instance_type":                 "c4.large",
+										"launch_template_specification": [],
+										"weighted_capacity":             "3",
+									},
+									{
+										"instance_requirements":         [],
+										"instance_type":                 "c3.large",
+										"launch_template_specification": [],
+										"weighted_capacity":             "2",
+									},
+								],
+							},
+						],
+					},
+				],
+				"placement_group":       null,
+				"protect_from_scale_in": false,
+				"suspended_processes":   null,
+				"tag":                       [],
+				"tags":                      null,
+				"target_group_arns":         null,
+				"termination_policies":      null,
+				"timeouts":                  null,
+				"wait_for_capacity_timeout": "10m",
+				"wait_for_elb_capacity":     null,
+				"warm_pool":                 [],
+			},
+			"after_unknown": {
+				"arn": true,
+				"availability_zones": [
+					false,
+				],
+				"default_cooldown":  true,
+				"health_check_type": true,
+				"id":                true,
+				"initial_lifecycle_hook": [],
+				"instance_refresh":       [],
+				"launch_template":        [],
+				"mixed_instances_policy": [
+					{
+						"instances_distribution": [
+							{
+								"on_demand_allocation_strategy": true,
+								"spot_instance_pools":           true,
+							},
+						],
+						"launch_template": [
+							{
+								"launch_template_specification": [
+									{
+										"launch_template_id":   true,
+										"launch_template_name": true,
+									},
+								],
+								"override": [
+									{
+										"instance_requirements":         [],
+										"launch_template_specification": [],
+									},
+									{
+										"instance_requirements":         [],
+										"launch_template_specification": [],
+									},
+								],
+							},
+						],
+					},
+				],
+				"name":                    true,
+				"name_prefix":             true,
+				"service_linked_role_arn": true,
+				"tag": [],
+				"vpc_zone_identifier": true,
+				"warm_pool":           [],
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "",
+		"name":           "bar",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_autoscaling_group",
+	},
+}
