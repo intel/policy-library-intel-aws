@@ -22,7 +22,7 @@ This Sentinel policy checks that the instances are configured with the recommend
                            | | '_ \| __/ _ \ |
                            | | | | | ||  __/ |
                            |_|_| |_|\__\___|_|
-       
+
         ========================================================================
         Name        : intel-aws-databricks-cluster-deny-unapproved-instance-types.sentinel
         Category    : Platform (PaaS)
@@ -30,7 +30,7 @@ This Sentinel policy checks that the instances are configured with the recommend
         Resource    : databricks_cluster
         Parameter   : node_type_id
         Check       : node_type_id contains
-       
+
         Storage Optimized:
                      i4i.large, i4i.xlarge,
                      i4i.2xlarge, i4i.4xlarge,

@@ -22,7 +22,7 @@ This Sentinel policy checks that the instances are configured with the recommend
                            | | '_ \| __/ _ \ |
                            | | | | | ||  __/ |
                            |_|_| |_|\__\___|_|
-       
+
         ========================================================================
         Name        : intel-aws-databricks-cluster-deny-unapproved-runtime-engines.sentinel
         Category    : Platform (PaaS)
@@ -30,7 +30,7 @@ This Sentinel policy checks that the instances are configured with the recommend
         Resource    : databricks_cluster
         Parameter   : runtime_engine
         Check       : runtime_engine contains
-       
+
         PHOTON
 
         ========================================================================

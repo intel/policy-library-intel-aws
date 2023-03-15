@@ -22,7 +22,7 @@ This Sentinel policy checks that the instances are configured with the recommend
                            | | '_ \| __/ _ \ |
                            | | | | | ||  __/ |
                            |_|_| |_|\__\___|_|
-       
+
         ========================================================================
         Name        : intel-aws-databricks-cluster-enforce-spark-conf.sentinel
         Category    : Platform (PaaS)
@@ -30,7 +30,7 @@ This Sentinel policy checks that the instances are configured with the recommend
         Resource    : databricks_cluster
         Parameter   : spark_conf
         Check       : spark_conf is not null
-       
+
 
         ========================================================================
         RESOURCE VIOLATIONS
