@@ -22,7 +22,7 @@ This Sentinel policy checks that the instances are configured with the recommend
                            | | '_ \| __/ _ \ |
                            | | | | | ||  __/ |
                            |_|_| |_|\__\___|_|
-       
+
         ========================================================================
         Name        : intel-aws-db-instance-deny-unapproved-instance-types.sentinel
         Category    : Infrastructure (IaaS)
@@ -30,7 +30,7 @@ This Sentinel policy checks that the instances are configured with the recommend
         Resource    : aws_db_instance
         Parameter   : instance_class
         Check       : instance_class does not contain
-       
+
                       db.m6i.large, db.m6i.xlarge
                       db.m6i.2xlarge, db.m6i.4xlarge
                       db.m6i.8xlarge, db.m6i.12xlarge

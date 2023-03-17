@@ -40,22 +40,14 @@ header = func(input, output) {
 		output + "\t                   |_|_| |_|\\__\\___|_|\n",
 		output + "\t\n",
 		output + "\t========================================================================\n",
-		output + "\tName        :" + output + " " + "intel-aws-db-instance-deny-unapproved-instance-types.sentinel\n",
-		output + "\tCategory    :" + output + " " + "Infrastructure (IaaS)\n",
-		output + "\tProvider    :" + output + " " + "hashicorp/aws\n",
-		output + "\tResource    :" + output + " " + "aws_db_instance\n",
-		output + "\tParameter   :" + output + " " + "instance_class\n",
-		output + "\tCheck       :" + output + " " + "instance_class contains\n",
+		output + "\tName        :" + output + " " + "intel-aws-databricks-cluster-deny-unapproved-runtime-engines.sentinel\n",
+		output + "\tCategory    :" + output + " " + "Platform (PaaS)\n",
+		output + "\tProvider    :" + output + " " + "databricks/databricks\n",
+		output + "\tResource    :" + output + " " + "databricks_cluster\n",
+		output + "\tParameter   :" + output + " " + "runtime_engine\n",
+		output + "\tCheck       :" + output + " " + "runtime_engine contains\n",
 		output + "\t\n",
-		output + "\t              db.m6i.large, db.m6i.xlarge\n",
-		output + "\t              db.m6i.2xlarge, db.m6i.4xlarge\n",
-		output + "\t              db.m6i.8xlarge, db.m6i.12xlarge\n",
-		output + "\t              db.m6i.16xlarge, db.m6i.24xlarge\n",
-		output + "\t              db.m6i.32xlarge, db.r6i.large\n",
-		output + "\t              db.r6i.xlarge, db.r6i.2xlarge\n",
-		output + "\t              db.r6i.4xlarge, db.r6i.8xlarge\n",
-		output + "\t              db.r6i.12xlarge, db.r6i.16xlarge\n",
-		output + "\t              db.r6i.24xlarge, db.r6i.32xlarge\n",
+		output + "\tPHOTON\n",
 	)
 	return null
 }
@@ -64,7 +56,7 @@ violations = func(input, output) {
 	print(
 		output + "\t========================================================================\n",
 		output + "\tRESOURCE VIOLATIONS\n" + format.reset,
-		output + "\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
+		output + "\tThe configured databricks cluster should use the runtime engine PHOTON\n",
 		output + "\t========================================================================\t",
 	)
 	for input.violations as violation {
@@ -88,12 +80,12 @@ violations = func(input, output) {
 }
 
 // Allowed server resource types
-allowed_server_types = ["db.m6i.large", "db.m6i.xlarge", "db.m6i.2xlarge", "db.m6i.4xlarge", "db.m6i.8xlarge", "db.m6i.12xlarge", "db.m6i.16xlarge", "db.m6i.24xlarge", "db.m6i.32xlarge", "db.r6i.large", "db.r6i.xlarge", "db.r6i.2xlarge", "db.r6i.4xlarge", "db.r6i.8xlarge", "db.r6i.12xlarge", "db.r6i.16xlarge", "db.r6i.24xlarge", "db.r6i.32xlarge"]
+allowed_engine_types = ["PHOTON"]
 
 doc = {
-	"id":       "awsdbinstance01",
-	"resource": "aws_db_instance",
-	"name":     "Server Type must be one of the approved instances",
+	"id":       "dbxoptimizedcluster",
+	"resource": "databricks_cluster",
+	"name":     "Runtime Engine Type must be type: PHOTON",
 }
 
 // Filter resources by type
@@ -105,7 +97,7 @@ all_resources = filter tfplan.resource_changes as _, rc {
 
 // Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	r.change.after.instance_class not in allowed_server_types
+	r.change.after.runtime_engine not in allowed_engine_types
 }
 
 // Build a summary report
@@ -117,7 +109,7 @@ summaryreport = {
 			"name":    violation.name,
 			"address": violation.address,
 			"type":    violation.type,
-			"message": violation.change.after.instance_class + " is not an allowed server type.",
+			"message": violation.change.after.runtime_engine + " is not an allowed runtime engine type.",
 		}
 	},
 }

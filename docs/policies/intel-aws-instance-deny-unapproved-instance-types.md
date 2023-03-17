@@ -22,7 +22,7 @@ This Sentinel policy checks that the instances are configured with the recommend
                            | | '_ \| __/ _ \ |
                            | | | | | ||  __/ |
                            |_|_| |_|\__\___|_|
-       
+
         ========================================================================
         Name        : intel-aws-instance-deny-unapproved-instance-types.sentinel
         Category    : Infrastructure (IaaS)
@@ -30,7 +30,7 @@ This Sentinel policy checks that the instances are configured with the recommend
         Resource    : aws_instance
         Parameter   : instance_type
         Check       : instance_type does not contain
-       
+
         Compute Optimized:
                      c6i.12xlarge, c6i.16xlarge
                      c6i.24xlarge, c6i.32xlarge
