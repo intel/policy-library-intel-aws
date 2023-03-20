@@ -89,7 +89,7 @@ header = func(input, output) {
 		output + "\t             m6in.8xlarge, m6in.xlarge\n",
 		output + "\t             m6in.large, m6in.4xlarge\n",
 		output + "\tMemory Optimized:\n",
-		output + "\t             r7iz.large, r7iz.xlarge\n",
+        output + "\t             r7iz.large, r7iz.xlarge\n",
         output + "\t             r7iz.2xlarge, r7iz.4xlarge\n",
         output + "\t             r7iz.8xlarge, r7iz.12xlarge\n",
         output + "\t             r7iz.24xlarge, r7iz.32xlarge\n",
