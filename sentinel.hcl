@@ -1,6 +1,6 @@
 policy "intel-aws-autoscaling-group-deny-unapproved-instance-types" {
   source = "./policies/intel-aws-autoscaling-group-deny-unapproved-instance-types/intel-aws-autoscaling-group-deny-unapproved-instance-types.sentinel"
-  enforcement_level = "soft-mandatory"
+  enforcement_level = "hard-mandatory"
 }
 
 policy "intel-aws-databricks-cluster-deny-unapproved-instance-types" {
