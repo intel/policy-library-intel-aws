@@ -1,4 +1,3 @@
-#fixgitmsg
 import "tfplan/v2" as tfplan
 
 param valid_actions default [
