@@ -71,9 +71,9 @@ resource_changes = {
 				"single_user_name": null,
 				"spark_conf":       null,
 				"spark_env_vars":   null,
-				"ssh_public_keys": null,
-				"timeouts":        null,
-				"workload_type":   [],
+				"ssh_public_keys":  null,
+				"timeouts":         null,
+				"workload_type":    [],
 			},
 			"after_unknown": {
 				"autoscale":                    [],

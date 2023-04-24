@@ -1,4 +1,5 @@
 import "tfplan/v2" as tfplan
+import "approved"
 
 param valid_actions default [
 	["no-op"],
@@ -6,85 +7,75 @@ param valid_actions default [
 	["update"],
 ]
 
-format = {
-	"reset": "\033[0m",
-	"info":  "\033[32m",
-	"warn":  "\033[33m",
-	"error": "\033[31m",
-}
-
-summary = func(input, level) {
+summary = func(input) {
 	result = false
 	if input.violations is empty {
 		return true
 	} else {
-		log(input, format[level])
+		log(input)
 	}
 	return result
 }
 
-log = func(input, output) {
-	header(input, output)
-	violations(input, output)
+log = func(input) {
+	header(input)
+	violations(input)
 	return null
 }
 
-header = func(input, output) {
+header = func(input) {
 	print(
-		output + "\t========================================================================\n",
-		output + "\t                    _       _       _ \n",
-		output + "\t                   (_)     | |     | |\n",
-		output + "\t                    _ _ __ | |_ ___| |\n",
-		output + "\t                   | | '_ \\| __/ _ \\ |\n",
-		output + "\t                   | | | | | ||  __/ |\n",
-		output + "\t                   |_|_| |_|\\__\\___|_|\n",
-		output + "\t\n",
-		output + "\t========================================================================\n",
-		output + "\tName        :" + output + " " + "intel-aws-databricks-cluster-deny-unapproved-instance-types.sentinel\n",
-		output + "\tCategory    :" + output + " " + "Platform (PaaS)\n",
-		output + "\tProvider    :" + output + " " + "databricks/databricks\n",
-		output + "\tResource    :" + output + " " + "databricks_cluster\n",
-		output + "\tParameter   :" + output + " " + "node_type_id\n",
-		output + "\tCheck       :" + output + " " + "node_type_id contains\n",
-		output + "\t\n",
-		output + "\tStorage Optimized:\n",
-		output + "\t             i4i.large, i4i.xlarge,\n",
-		output + "\t             i4i.2xlarge, i4i.4xlarge,\n",
-		output + "\t             i4i.8xlarge, i4i.16xlarge,\n",
-		output + "\t             i4i.32xlarge,\n",
+		"\t========================================================================\n",
+		"\t                    _       _       _ \n",
+		"\t                   (_)     | |     | |\n",
+		"\t                    _ _ __ | |_ ___| |\n",
+		"\t                   | | '_ \\| __/ _ \\ |\n",
+		"\t                   | | | | | ||  __/ |\n",
+		"\t                   |_|_| |_|\\__\\___|_|\n",
+		"\t\n",
+		"\t========================================================================\n",
+		"\tName        :" + "intel-aws-databricks-cluster-deny-unapproved-instance-types.sentinel\n",
+		"\tCategory    :" + "Platform (PaaS)\n",
+		"\tProvider    :" + "databricks/databricks\n",
+		"\tResource    :" + "databricks_cluster\n",
+		"\tParameter   :" + "node_type_id\n",
+		"\tCheck       :" + "node_type_id contains\n",
+		"\t\n",
+		"\tFor a list of allowed instance types see:\n",
+		"\thttps://github.com/intel/terraform-intel-aws-databricks/blob/main/policies.md\n",
 	)
 	return null
 }
 
-violations = func(input, output) {
+violations = func(input) {
 	print(
-		output + "\t========================================================================\n",
-		output + "\tRESOURCE VIOLATIONS\n" + format.reset,
-		output + "\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
-		output + "\t========================================================================\t",
+		"\t========================================================================\n",
+		"\tRESOURCE VIOLATIONS\n",
+		"\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
+		"\t========================================================================\t",
 	)
 	for input.violations as violation {
 		print(
 			"\t",
-			output + "name       :" + output + " " + violation.name + "\n\t",
-			output + "type       :" + output + " " + violation.type + "\n\t",
-			output + "address    :" + output + " " + violation.address + "\n\t",
-			output + "message    :" + output + " " + violation.message + "\t\n",
-			output + "\t------------------------------------------------------------------------\t",
+			"name       :" + violation.name + "\n\t",
+			"type       :" + violation.type + "\n\t",
+			"address    :" + violation.address + "\n\t",
+			"message    :" + violation.message + "\t\n",
+			"\t------------------------------------------------------------------------\t",
 		)
 	}
 	if (input.violations is not empty) {
 		print(
-			output + "\t",
-			output + "Resources out of compliance: " + string(length(input.violations)) + "\n" + format.reset,
-			output + "\t------------------------------------------------------------------------\t",
+			"\t",
+			"Resources out of compliance: " + string(length(input.violations)) + "\n",
+			"\t------------------------------------------------------------------------\t",
 		)
 	}
 	return null
 }
 
 // Allowed server resource types
-allowed_server_types = ["i4i.large", "i4i.xlarge", "i4i.2xlarge", "i4i.4xlarge", "i4i.8xlarge", "i4i.16xlarge", "i4i.32xlarge"]
+allowed_server_types = approved.awsdbx
 
 doc = {
 	"id":       "dbxoptimizedcluster",
@@ -119,5 +110,5 @@ summaryreport = {
 }
 
 main = rule {
-	summary(summaryreport, "warn")
+	summary(summaryreport)
 }

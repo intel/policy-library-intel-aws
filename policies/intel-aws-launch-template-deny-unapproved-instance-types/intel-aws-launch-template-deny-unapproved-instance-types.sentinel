@@ -1,4 +1,5 @@
 import "tfplan/v2" as tfplan
+import "approved"
 
 param valid_actions default [
 	["no-op"],
@@ -6,126 +7,75 @@ param valid_actions default [
 	["update"],
 ]
 
-format = {
-	"reset": "\033[0m",
-	"info":  "\033[32m",
-	"warn":  "\033[33m",
-	"error": "\033[31m",
-}
-
-summary = func(input, level) {
+summary = func(input) {
 	result = false
 	if input.violations is empty {
 		return true
 	} else {
-		log(input, format[level])
+		log(input)
 	}
 	return result
 }
 
-log = func(input, output) {
-	header(input, output)
-	violations(input, output)
+log = func(input) {
+	header(input)
+	violations(input)
 	return null
 }
 
-header = func(input, output) {
+header = func(input) {
 	print(
-		output + "\t========================================================================\n",
-		output + "\t                    _       _       _ \n",
-		output + "\t                   (_)     | |     | |\n",
-		output + "\t                    _ _ __ | |_ ___| |\n",
-		output + "\t                   | | '_ \\| __/ _ \\ |\n",
-		output + "\t                   | | | | | ||  __/ |\n",
-		output + "\t                   |_|_| |_|\\__\\___|_|\n",
-		output + "\t\n",
-		output + "\t========================================================================\n",
-		output + "\tName        :" + output + " " + "intel-aws-launch-template-deny-unapproved-instance-types.sentinel\n",
-		output + "\tCategory    :" + output + " " + "Platform (PaaS)\n",
-		output + "\tProvider    :" + output + " " + "hashicorp/aws\n",
-		output + "\tResource    :" + output + " " + "aws_launch_template\n",
-		output + "\tParameter   :" + output + " " + "instance_type\n",
-		output + "\tCheck       :" + output + " " + "instance_type contains\n",
-		output + "\t\n",
-		output + "\tGeneral Purpose:\n",
-		output + "\t             m6i.large, m6i.xlarge,\n",
-		output + "\t             m6i.2xlarge, m6i.4xlarge,\n",
-		output + "\t             m6i.8xlarge, m6i.12xlarge,\n",
-		output + "\t             m6i.16xlarge, m6i.24xlarge,\n",
-		output + "\t             m6i.32xlarge, m6i.metal,\n",
-		output + "\t             m6in.large, m6in.xlarge,\n",
-		output + "\t             m6in.2xlarge, m6in.4xlarge,\n",
-		output + "\t             m6in.8xlarge, m6in.12xlarge,\n",
-		output + "\t             m6in.16xlarge, m6in.24xlarge,\n",
-		output + "\t             m6in.32xlarge\n",
-		output + "\tCompute Optimized:\n",
-		output + "\t             c6in.large, c6in.xlarge,\n",
-		output + "\t             c6in.2xlarge, c6in.4xlarge,\n",
-		output + "\t             c6in.8xlarge, c6in.12xlarge,\n",
-		output + "\t             c6in.16xlarge, c6in.24xlarge,\n",
-		output + "\t             c6in.32xlarge\n",
-		output + "\t             c6i.large, c6i.xlarge,\n",
-		output + "\t             c6i.2xlarge, c6i.4xlarge,\n",
-		output + "\t             c6i.8xlarge, c6i.12xlarge,\n",
-		output + "\t             c6i.16xlarge, c6i.24xlarge,\n",
-		output + "\t             c6i.32xlarge, c6i.metal\n",
-		output + "\tMemory Optimized:\n",
-		output + "\t             r6in.large, r6in.xlarge,\n",
-		output + "\t             r6in.2xlarge, r6in.4xlarge,\n",
-		output + "\t             r6in.8xlarge, r6in.12xlarge,\n",
-		output + "\t             r6in.16xlarge, r6in.24xlarge,\n",
-		output + "\t             r6in.32xlarge r6i.large,\n",
-		output + "\t             r6i.xlarge, r6i.2xlarge,\n",
-		output + "\t             r6i.4xlarge, r6i.8xlarge,\n",
-		output + "\t             r6i.12xlarge, r6i.16xlarge,\n",
-		output + "\t             r6i.24xlarge, r6i.32xlarge,\n",
-		output + "\t             r6i.metal x2idn.16xlarge,\n",
-		output + "\t             x2idn.24xlarge, x2idn.32xlarge,\n",
-		output + "\t             x2idn.metal x2iedn.xlarge,\n",
-		output + "\t             x2iedn.2xlarge, x2iedn.4xlarge,\n",
-		output + "\t             x2iedn.8xlarge, x2iedn.16xlarge,\n",
-		output + "\t             x2iedn.24xlarge, x2iedn.32xlarge,\n",
-		output + "\t             x2iedn.metal\n",
-		output + "\tStorage Optimized:\n",
-		output + "\t             i4i.large, i4i.xlarge,\n",
-		output + "\t             i4i.2xlarge, i4i.4xlarge,\n",
-		output + "\t             i4i.8xlarge, i4i.16xlarge,\n",
-		output + "\t             i4i.32xlarge, i4i.metal\n",
-		output + "\tAccelerated Computing:\n",
-		output + "\t             trn1.32xlarge, trn1.2xlarge\n",
+		"\t========================================================================\n",
+		"\t                    _       _       _ \n",
+		"\t                   (_)     | |     | |\n",
+		"\t                    _ _ __ | |_ ___| |\n",
+		"\t                   | | '_ \\| __/ _ \\ |\n",
+		"\t                   | | | | | ||  __/ |\n",
+		"\t                   |_|_| |_|\\__\\___|_|\n",
+		"\t\n",
+		"\t========================================================================\n",
+		"\tName        :" + "intel-aws-launch-template-deny-unapproved-instance-types.sentinel\n",
+		"\tCategory    :" + "Platform (PaaS)\n",
+		"\tProvider    :" + "hashicorp/aws\n",
+		"\tResource    :" + "aws_launch_template\n",
+		"\tParameter   :" + "instance_type\n",
+		"\tCheck       :" + "instance_type contains\n",
+		"\t\n",
+		"\tFor a list of allowed instance types see:\n",
+		"\thttps://github.com/intel/terraform-intel-aws-eks/blob/main/policies.md\n",
 	)
 	return null
 }
 
-violations = func(input, output) {
+violations = func(input) {
 	print(
-		output + "\t========================================================================\n",
-		output + "\tRESOURCE VIOLATIONS\n" + format.reset,
-		output + "\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
-		output + "\t========================================================================\t",
+		"\t========================================================================\n",
+		"\tRESOURCE VIOLATIONS\n",
+		"\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
+		"\t========================================================================\t",
 	)
 	for input.violations as violation {
 		print(
 			"\t",
-			output + "name       :" + output + " " + violation.name + "\n\t",
-			output + "type       :" + output + " " + violation.type + "\n\t",
-			output + "address    :" + output + " " + violation.address + "\n\t",
-			output + "message    :" + output + " " + violation.message + "\t\n",
-			output + "\t------------------------------------------------------------------------\t",
+			"name       :" + violation.name + "\n\t",
+			"type       :" + violation.type + "\n\t",
+			"address    :" + violation.address + "\n\t",
+			"message    :" + violation.message + "\t\n",
+			"\t------------------------------------------------------------------------\t",
 		)
 	}
 	if (input.violations is not empty) {
 		print(
-			output + "\t",
-			output + "Resources out of compliance: " + string(length(input.violations)) + "\n" + format.reset,
-			output + "\t------------------------------------------------------------------------\t",
+			"\t",
+			"Resources out of compliance: " + string(length(input.violations)) + "\n",
+			"\t------------------------------------------------------------------------\t",
 		)
 	}
 	return null
 }
 
 // Allowed server resource types
-allowed_server_types = ["m6i.large", "m6i.xlarge", "m6i.2xlarge", "m6i.4xlarge", "m6i.8xlarge", "m6i.12xlarge", "m6i.16xlarge", "m6i.24xlarge", "m6i.32xlarge", "m6i.metal", "m6in.large", "m6in.xlarge", "m6in.2xlarge", "m6in.4xlarge", "m6in.8xlarge", "m6in.12xlarge", "m6in.16xlarge", "m6in.24xlarge", "m6in.32xlarge", "c6in.large", "c6in.xlarge", "c6in.2xlarge", "c6in.4xlarge", "c6in.8xlarge", "c6in.12xlarge", "c6in.16xlarge", "c6in.24xlarge", "c6in.32xlarge", "c6i.large", "c6i.xlarge", "c6i.2xlarge", "c6i.4xlarge", "c6i.8xlarge", "c6i.12xlarge", "c6i.16xlarge", "c6i.24xlarge", "c6i.32xlarge", "c6i.metal", "r6in.large", "r6in.xlarge", "r6in.2xlarge", "r6in.4xlarge", "r6in.8xlarge", "r6in.12xlarge", "r6in.16xlarge", "r6in.24xlarge", "r6in.32xlarge", "r6i.large", "r6i.xlarge", "r6i.2xlarge", "r6i.4xlarge", "r6i.8xlarge", "r6i.12xlarge", "r6i.16xlarge", "r6i.24xlarge", "r6i.32xlarge", "r6i.metal", "x2idn.16xlarge", "x2idn.24xlarge", "x2idn.32xlarge", "x2idn.metal", "x2iedn.xlarge", "x2iedn.2xlarge", "x2iedn.4xlarge", "x2iedn.8xlarge", "x2iedn.16xlarge", "x2iedn.24xlarge", "x2iedn.32xlarge", "x2iedn.metal", "i4i.large", "i4i.xlarge", "i4i.2xlarge", "i4i.4xlarge", "i4i.8xlarge", "i4i.16xlarge", "i4i.32xlarge", "i4i.metal", "trn1.2xlarge", "trn1.32xlarge"]
+allowed_server_types = approved.awseks
 
 doc = {
 	"id":       "kubernetes01",
@@ -160,5 +110,5 @@ summaryreport = {
 }
 
 main = rule {
-	summary(summaryreport, "warn")
+	summary(summaryreport)
 }

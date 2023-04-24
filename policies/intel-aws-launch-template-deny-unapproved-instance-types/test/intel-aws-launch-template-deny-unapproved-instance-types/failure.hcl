@@ -4,6 +4,11 @@ mock "tfplan/v2" {
   }
 }
 
+import "static" "approved" {
+  source = "../../approved.json"
+  format = "json"
+}
+
 test {
   rules = {
     main = false

@@ -1,4 +1,5 @@
 import "tfplan/v2" as tfplan
+import "approved"
 
 param valid_actions default [
 	["no-op"],
@@ -6,89 +7,78 @@ param valid_actions default [
 	["update"],
 ]
 
-format = {
-	"reset": "\033[0m",
-	"info":  "\033[32m",
-	"warn":  "\033[33m",
-	"error": "\033[31m",
-}
-
-summary = func(input, level) {
+summary = func(input) {
 	result = false
 	if input.violations is empty {
 		return true
 	} else {
-		log(input, format[level])
+		log(input)
 	}
 	return result
 }
 
-log = func(input, output) {
-	header(input, output)
-	violations(input, output)
+log = func(input) {
+	header(input)
+	violations(input)
 	return null
 }
 
-header = func(input, output) {
+header = func(input) {
 	print(
-		output + "\t========================================================================\n",
-		output + "\t                    _       _       _ \n",
-		output + "\t                   (_)     | |     | |\n",
-		output + "\t                    _ _ __ | |_ ___| |\n",
-		output + "\t                   | | '_ \\| __/ _ \\ |\n",
-		output + "\t                   | | | | | ||  __/ |\n",
-		output + "\t                   |_|_| |_|\\__\\___|_|\n",
-		output + "\t\n",
-		output + "\t========================================================================\n",
-		output + "\tName        :" + output + " " + "intel-aws-db-instance-deny-unapproved-instance-types.sentinel\n",
-		output + "\tCategory    :" + output + " " + "Infrastructure (IaaS)\n",
-		output + "\tProvider    :" + output + " " + "hashicorp/aws\n",
-		output + "\tResource    :" + output + " " + "aws_db_instance\n",
-		output + "\tParameter   :" + output + " " + "instance_class\n",
-		output + "\tCheck       :" + output + " " + "instance_class contains\n",
-		output + "\t\n",
-		output + "\t              db.m6i.large, db.m6i.xlarge\n",
-		output + "\t              db.m6i.2xlarge, db.m6i.4xlarge\n",
-		output + "\t              db.m6i.8xlarge, db.m6i.12xlarge\n",
-		output + "\t              db.m6i.16xlarge, db.m6i.24xlarge\n",
-		output + "\t              db.m6i.32xlarge, db.r6i.large\n",
-		output + "\t              db.r6i.xlarge, db.r6i.2xlarge\n",
-		output + "\t              db.r6i.4xlarge, db.r6i.8xlarge\n",
-		output + "\t              db.r6i.12xlarge, db.r6i.16xlarge\n",
-		output + "\t              db.r6i.24xlarge, db.r6i.32xlarge\n",
+		"\t========================================================================\n",
+		"\t                    _       _       _ \n",
+		"\t                   (_)     | |     | |\n",
+		"\t                    _ _ __ | |_ ___| |\n",
+		"\t                   | | '_ \\| __/ _ \\ |\n",
+		"\t                   | | | | | ||  __/ |\n",
+		"\t                   |_|_| |_|\\__\\___|_|\n",
+		"\t\n",
+		"\t========================================================================\n",
+		"\tName        :" + "intel-aws-db-instance-deny-unapproved-instance-types.sentinel\n",
+		"\tCategory    :" + "Infrastructure (IaaS)\n",
+		"\tProvider    :" + "hashicorp/aws\n",
+		"\tResource    :" + "aws_db_instance\n",
+		"\tParameter   :" + "instance_class\n",
+		"\tCheck       :" + "instance_class contains\n",
+		"\t\n",
+		"\tFor a list of allowed instance types see:\n",
+		"\thttps://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n",
+		"\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n",
+		"\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n",
+		"\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
 	)
 	return null
 }
 
-violations = func(input, output) {
+violations = func(input) {
 	print(
-		output + "\t========================================================================\n",
-		output + "\tRESOURCE VIOLATIONS\n" + format.reset,
-		output + "\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
-		output + "\t========================================================================\t",
+		"\t========================================================================\n",
+		"\tRESOURCE VIOLATIONS\n",
+		"\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
+		"\t========================================================================\t",
 	)
 	for input.violations as violation {
 		print(
 			"\t",
-			output + "name       :" + output + " " + violation.name + "\n\t",
-			output + "type       :" + output + " " + violation.type + "\n\t",
-			output + "address    :" + output + " " + violation.address + "\n\t",
-			output + "message    :" + output + " " + violation.message + "\t\n",
-			output + "\t------------------------------------------------------------------------\t",
+			"name       :" + violation.name + "\n\t",
+			"type       :" + violation.type + "\n\t",
+			"address    :" + violation.address + "\n\t",
+			"message    :" + violation.message + "\t\n",
+			"\t------------------------------------------------------------------------\t",
 		)
 	}
 	if (input.violations is not empty) {
 		print(
-			output + "\t",
-			output + "Resources out of compliance: " + string(length(input.violations)) + "\n" + format.reset,
-			output + "\t------------------------------------------------------------------------\t",
+			"\t",
+			"Resources out of compliance: " + string(length(input.violations)) + "\n",
+			"\t------------------------------------------------------------------------\t",
 		)
 	}
 	return null
 }
 
 // Allowed server resource types
-allowed_server_types = ["db.m6i.large", "db.m6i.xlarge", "db.m6i.2xlarge", "db.m6i.4xlarge", "db.m6i.8xlarge", "db.m6i.12xlarge", "db.m6i.16xlarge", "db.m6i.24xlarge", "db.m6i.32xlarge", "db.r6i.large", "db.r6i.xlarge", "db.r6i.2xlarge", "db.r6i.4xlarge", "db.r6i.8xlarge", "db.r6i.12xlarge", "db.r6i.16xlarge", "db.r6i.24xlarge", "db.r6i.32xlarge"]
+allowed_server_types = approved.awsdb
 
 doc = {
 	"id":       "awsdbinstance01",
@@ -123,5 +113,5 @@ summaryreport = {
 }
 
 main = rule {
-	summary(summaryreport, "warn")
+	summary(summaryreport)
 }
