@@ -46,10 +46,10 @@ resource_changes = {
 				"cluster_log_conf":            [],
 				"cluster_mount_info":          [],
 				"cluster_name":                "dbx_optimized_cluster",
-				"data_security_mode": null,
-				"docker_image":       [],
-				"gcp_attributes":     [],
-				"idempotency_token":  null,
+				"data_security_mode":          null,
+				"docker_image":                [],
+				"gcp_attributes":              [],
+				"idempotency_token":           null,
 				"init_scripts": [
 					{
 						"abfss": [],

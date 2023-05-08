@@ -24,31 +24,27 @@ This Sentinel policy checks that the instances are configured with the recommend
                            |_|_| |_|\__\___|_|
 
         ========================================================================
-        Name        : intel-aws-db-instance-deny-unapproved-instance-types.sentinel
-        Category    : Infrastructure (IaaS)
-        Provider    : hashicorp/aws
-        Resource    : aws_db_instance
-        Parameter   : instance_class
-        Check       : instance_class does not contain
+        Name        :intel-aws-db-instance-deny-unapproved-instance-types.sentinel
+        Category    :Infrastructure (IaaS)
+        Provider    :hashicorp/aws
+        Resource    :aws_db_instance
+        Parameter   :instance_class
+        Check       :instance_class contains
 
-                      db.m6i.large, db.m6i.xlarge
-                      db.m6i.2xlarge, db.m6i.4xlarge
-                      db.m6i.8xlarge, db.m6i.12xlarge
-                      db.m6i.16xlarge, db.m6i.24xlarge
-                      db.m6i.32xlarge, db.r6i.large
-                      db.r6i.xlarge, db.r6i.2xlarge
-                      db.r6i.4xlarge, db.r6i.8xlarge
-                      db.r6i.12xlarge, db.r6i.16xlarge
-                      db.r6i.24xlarge, db.r6i.32xlarge
+        For a list of allowed instance types see:
+        https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md
+        https://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md
+        https://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md
+        https://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md
 
         ========================================================================
         RESOURCE VIOLATIONS
         The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)
         ========================================================================
-         name       : rds
-         type       : aws_db_instance
-         address    : module.intel-aws-deny-unapproved-instance-types-aws-db-instance.aws_db_instance.rds
-         message    : db.m6.large is not an allowed server type.
+         name       :rds
+         type       :aws_db_instance
+         address    :module.intel-aws-deny-unapproved-instance-types-aws-db-instance.aws_db_instance.rds
+         message    :db.m6.large is not an allowed server type.
         ------------------------------------------------------------------------
          Resources out of compliance: 1
         ------------------------------------------------------------------------

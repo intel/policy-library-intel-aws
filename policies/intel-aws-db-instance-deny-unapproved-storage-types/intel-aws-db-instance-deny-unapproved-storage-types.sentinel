@@ -1,40 +1,50 @@
 import "tfplan/v2" as tfplan
+import "policy_summary"
 
-# Get all db_instances instances from all modules
-db_instances = filter tfplan.resource_changes as _, rc {
-	rc.mode is "managed" and
-		rc.type is "aws_db_instance" and
-		(rc.change.actions contains "create" or
-			rc.change.actions is ["update"])
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   "io1",
+	"category":  "Infrastructure (IaaS)",
+	"error":     " is not an allowed storage type.",
+	"file_name": "intel-aws-db-instance-deny-unapproved-storage-types.sentinel",
+	"name":      "awsdbinstance01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
+	"parameter": "storage_type",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_db_instance",
+	"violation": "The configured server must use approved storage type",
 }
 
-allowed_storage_types = ["io1"]
-
-storage_type_allowed = rule {
-	all db_instances as _, instance {
-		instance.change.after.storage_type in allowed_storage_types
-	}
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
 }
 
-// --------------------------------------------------------
-//                     _       _       _
-//                    (_)     | |     | |
-//                     _ _ __ | |_ ___| |
-//                    | | '_ \| __/ _ \ |
-//                    | | | | | ||  __/ |
-//                    |_|_| |_|\__\___|_|
-//
-// --------------------------------------------------------
-// Name:        intel-aws-db-instance-deny-unapproved-storage-types.sentinel
-// Category:    Infrastructure (IaaS)
-// Provider:    hashicorp/aws
-// Resource:    aws_db_instance
-// Parameter:   storage_type
-//
-// Check:       storage_type does not contain: io1
-// --------------------------------------------------------
-//  The configured storage_type should io1 for better performance
-// --------------------------------------------------------
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.storage_type not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.change.after.storage_type + doc.error,
+		}
+	},
+}
+
 main = rule {
-	(storage_type_allowed) else true
+	policy_summary.summary(summaryreport, doc)
 }

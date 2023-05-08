@@ -1,39 +1,50 @@
 import "tfplan/v2" as tfplan
+import "policy_summary"
 
-# Get all db_instances instances from all modules
-db_instances = filter tfplan.resource_changes as _, rc {
-	rc.mode is "managed" and
-		rc.type is "aws_db_instance" and
-		(rc.change.actions contains "create" or
-			rc.change.actions is ["update"])
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   null,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " uses unencrypted storage",
+	"file_name": "intel-aws-db-instance-deny-unapproved-storage-types.sentinel",
+	"name":      "awsdbinstance01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
+	"parameter": "storage_encrypted",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_db_instance",
+	"violation": "The configured server must use encrypted storage",
 }
 
-# Rule to restrict instance_class types
-storage_encryption_enabled = rule {
-	all db_instances as _, instance {
-		instance.change.after.storage_encrypted
-	}
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
 }
 
-// --------------------------------------------------------
-//                     _       _       _
-//                    (_)     | |     | |
-//                     _ _ __ | |_ ___| |
-//                    | | '_ \| __/ _ \ |
-//                    | | | | | ||  __/ |
-//                    |_|_| |_|\__\___|_|
-//
-// --------------------------------------------------------
-// Name:        intel-aws-db-instance-deny-unencrypted-database.sentinel
-// Category:    Infrastructure (IaaS)
-// Provider:    hashicorp/aws
-// Resource:    aws_db_instance
-// Parameter:   storage_encrypted
-//
-// Check:       storage_encrypted is not equal to: true
-// --------------------------------------------------------
-//  The RDS instance should utilize database encryption.
-// --------------------------------------------------------
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.storage_encrypted is false
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
 main = rule {
-	(storage_encryption_enabled) else true
+	policy_summary.summary(summaryreport, doc)
 }

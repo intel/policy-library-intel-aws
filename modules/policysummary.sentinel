@@ -1,0 +1,65 @@
+summary = func(input, doc) {
+	result = false
+	if input.violations is empty {
+		return true
+	} else {
+		log(input, doc)
+	}
+	return result
+}
+
+log = func(input, doc) {
+	header(input, doc)
+	violations(input, doc)
+	return null
+}
+
+header = func(input, doc) {
+	print(
+		"\t========================================================================\n",
+		"\t                    _       _       _ \n",
+		"\t                   (_)     | |     | |\n",
+		"\t                    _ _ __ | |_ ___| |\n",
+		"\t                   | | '_ \\| __/ _ \\ |\n",
+		"\t                   | | | | | ||  __/ |\n",
+		"\t                   |_|_| |_|\\__\\___|_|\n",
+		"\t\n",
+		"\t========================================================================\n",
+		"\tName        :" + doc.file_name + "\n",
+		"\tCategory    :" + doc.category + "\n",
+		"\tProvider    :" + doc.provider + "\n",
+		"\tResource    :" + doc.resource + "\n",
+		"\tParameter   :" + doc.parameter + "\n",
+		"\t========================================================================\n",
+		"\tFor a list of allowed parameter options see:\n",
+		"\t" + doc.md_url + "\n",
+	)
+	return null
+}
+
+violations = func(input, doc) {
+	print(
+		"\t========================================================================\n",
+		"\tRESOURCE VIOLATIONS\n",
+		"\t" + doc.violation + "\n",
+		"\t========================================================================\t",
+	)
+	for input.violations as violation {
+		print(
+			"\t",
+			"name       : " + violation.name + "\n\t",
+			"type       : " + violation.type + "\n\t",
+			"address    : " + violation.address + "\n\t",
+			"message    : " + violation.message + "\t\n",
+			"\t------------------------------------------------------------------------\t",
+		)
+	}
+	if (input.violations is not empty) {
+		print(
+			"\t",
+			"Resources out of compliance: " + string(length(input.violations)) + "\n",
+			"\t------------------------------------------------------------------------\t",
+		)
+	}
+	return null
+}
