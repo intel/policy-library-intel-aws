@@ -109,6 +109,20 @@
     "trn1.2xlarge",
     "trn1.32xlarge"
   ],
+  "awselastic": [
+    "cache.m5.large",
+    "cache.m5.xlarge",
+    "cache.m5.2xlarge",
+    "cache.m5.4xlarge",
+    "cache.m5.12xlarge",
+    "cache.m5.24xlarge",
+    "cache.r5.large",
+    "cache.r5.xlarge",
+    "cache.r5.2xlarge",
+    "cache.r5.4xlarge",
+    "cache.r5.12xlarge",
+    "cache.r5.24xlarge"
+  ],
   "awsinstance": [
     "r7iz.large",
     "r7iz.xlarge",

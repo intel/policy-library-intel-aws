@@ -1,5 +1,6 @@
 import "tfplan/v2" as tfplan
 import "approved"
+import "policy_summary"
 
 param valid_actions default [
 	["no-op"],
@@ -7,83 +8,17 @@ param valid_actions default [
 	["update"],
 ]
 
-summary = func(input) {
-	result = false
-	if input.violations is empty {
-		return true
-	} else {
-		log(input)
-	}
-	return result
-}
-
-log = func(input) {
-	header(input)
-	violations(input)
-	return null
-}
-
-header = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\t                    _       _       _ \n",
-		"\t                   (_)     | |     | |\n",
-		"\t                    _ _ __ | |_ ___| |\n",
-		"\t                   | | '_ \\| __/ _ \\ |\n",
-		"\t                   | | | | | ||  __/ |\n",
-		"\t                   |_|_| |_|\\__\\___|_|\n",
-		"\t\n",
-		"\t========================================================================\n",
-		"\tName        :" + "intel-aws-db-instance-deny-unapproved-instance-types.sentinel\n",
-		"\tCategory    :" + "Infrastructure (IaaS)\n",
-		"\tProvider    :" + "hashicorp/aws\n",
-		"\tResource    :" + "aws_db_instance\n",
-		"\tParameter   :" + "instance_class\n",
-		"\tCheck       :" + "instance_class contains\n",
-		"\t\n",
-		"\tFor a list of allowed instance types see:\n",
-		"\thttps://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n",
-		"\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n",
-		"\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n",
-		"\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
-	)
-	return null
-}
-
-violations = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\tRESOURCE VIOLATIONS\n",
-		"\tThe configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)\n",
-		"\t========================================================================\t",
-	)
-	for input.violations as violation {
-		print(
-			"\t",
-			"name       :" + violation.name + "\n\t",
-			"type       :" + violation.type + "\n\t",
-			"address    :" + violation.address + "\n\t",
-			"message    :" + violation.message + "\t\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	if (input.violations is not empty) {
-		print(
-			"\t",
-			"Resources out of compliance: " + string(length(input.violations)) + "\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	return null
-}
-
-// Allowed server resource types
-allowed_server_types = approved.awsdb
-
 doc = {
-	"id":       "awsdbinstance01",
-	"resource": "aws_db_instance",
-	"name":     "Server Type must be one of the approved instances",
+	"allowed":   approved.awsdb,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " is not an allowed server type.",
+	"file_name": "intel-aws-db-instance-deny-unapproved-instance-types.sentinel",
+	"name":      "awsdbinstance01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
+	"parameter": "instance_class",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_db_instance",
+	"violation": "The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)",
 }
 
 // Filter resources by type
@@ -95,23 +30,22 @@ all_resources = filter tfplan.resource_changes as _, rc {
 
 // Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	r.change.after.instance_class not in allowed_server_types
+	r.change.after.instance_class not in doc.allowed
 }
 
 // Build a summary report
 summaryreport = {
-	"id":   doc.id,
 	"name": doc.name,
 	"violations": map violators as _, violation {
 		{
 			"name":    violation.name,
 			"address": violation.address,
 			"type":    violation.type,
-			"message": violation.change.after.instance_class + " is not an allowed server type.",
+			"message": violation.change.after.instance_class + doc.error,
 		}
 	},
 }
 
 main = rule {
-	summary(summaryreport)
+	policy_summary.summary(summaryreport, doc)
 }

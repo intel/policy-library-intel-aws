@@ -4,6 +4,10 @@ mock "tfplan/v2" {
   }
 }
 
+import "module" "policy_summary" {
+  source = "../../../../modules/policysummary.sentinel"
+}
+
 test {
   rules = {
     main = false

@@ -9,6 +9,10 @@ import "static" "approved" {
   format = "json"
 }
 
+import "module" "policy_summary" {
+  source = "../../../../modules/policysummary.sentinel"
+}
+
 test {
   rules = {
     main = false

@@ -1,4 +1,6 @@
 import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
 
 param valid_actions default [
 	["no-op"],
@@ -6,79 +8,17 @@ param valid_actions default [
 	["update"],
 ]
 
-summary = func(input) {
-	result = false
-	if input.violations is empty {
-		return true
-	} else {
-		log(input)
-	}
-	return result
-}
-
-log = func(input) {
-	header(input)
-	violations(input)
-	return null
-}
-
-header = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\t                    _       _       _ \n",
-		"\t                   (_)     | |     | |\n",
-		"\t                    _ _ __ | |_ ___| |\n",
-		"\t                   | | '_ \\| __/ _ \\ |\n",
-		"\t                   | | | | | ||  __/ |\n",
-		"\t                   |_|_| |_|\\__\\___|_|\n",
-		"\t\n",
-		"\t========================================================================\n",
-		"\tName        :" + "intel-aws-databricks-cluster-deny-unapproved-runtime-engines.sentinel\n",
-		"\tCategory    :" + "Platform (PaaS)\n",
-		"\tProvider    :" + "databricks/databricks\n",
-		"\tResource    :" + "databricks_cluster\n",
-		"\tParameter   :" + "runtime_engine\n",
-		"\tCheck       :" + "runtime_engine contains\n",
-		"\t\n",
-		"\tPHOTON\n",
-	)
-	return null
-}
-
-violations = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\tRESOURCE VIOLATIONS\n",
-		"\tThe configured databricks cluster should use the runtime engine PHOTON\n",
-		"\t========================================================================\t",
-	)
-	for input.violations as violation {
-		print(
-			"\t",
-			"name       :" + violation.name + "\n\t",
-			"type       :" + violation.type + "\n\t",
-			"address    :" + violation.address + "\n\t",
-			"message    :" + violation.message + "\t\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	if (input.violations is not empty) {
-		print(
-			"\t",
-			"Resources out of compliance: " + string(length(input.violations)) + "\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	return null
-}
-
-// Allowed server resource types
-allowed_engine_types = ["PHOTON"]
-
 doc = {
-	"id":       "dbxoptimizedcluster",
-	"resource": "databricks_cluster",
-	"name":     "Runtime Engine Type must be type: PHOTON",
+	"allowed":   ["PHOTON"],
+	"category":  "Platform (PaaS)",
+	"error":     " is not an allowed runtime engine type.",
+	"file_name": "intel-aws-databricks-cluster-deny-unapproved-runtime-engines.sentinel",
+	"name":      "dbxoptimizedcluster",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-databricks/blob/main/policies.md",
+	"parameter": "runtime_engine",
+	"provider":  "databricks/databricks",
+	"resource":  "databricks_cluster",
+	"violation": "The configured databricks cluster should use the runtime engine PHOTON",
 }
 
 // Filter resources by type
@@ -90,23 +30,22 @@ all_resources = filter tfplan.resource_changes as _, rc {
 
 // Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	r.change.after.runtime_engine not in allowed_engine_types
+	r.change.after.runtime_engine not in doc.allowed
 }
 
 // Build a summary report
 summaryreport = {
-	"id":   doc.id,
 	"name": doc.name,
 	"violations": map violators as _, violation {
 		{
 			"name":    violation.name,
 			"address": violation.address,
 			"type":    violation.type,
-			"message": violation.change.after.runtime_engine + " is not an allowed runtime engine type.",
+			"message": violation.name + doc.error,
 		}
 	},
 }
 
 main = rule {
-	summary(summaryreport)
+	policy_summary.summary(summaryreport, doc)
 }

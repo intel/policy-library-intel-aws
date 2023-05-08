@@ -1,4 +1,5 @@
 import "tfplan/v2" as tfplan
+import "policy_summary"
 
 param valid_actions default [
 	["no-op"],
@@ -6,76 +7,17 @@ param valid_actions default [
 	["update"],
 ]
 
-summary = func(input) {
-	result = false
-	if input.violations is empty {
-		return true
-	} else {
-		log(input)
-	}
-	return result
-}
-
-log = func(input) {
-	header(input)
-	violations(input)
-	return null
-}
-
-header = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\t                    _       _       _ \n",
-		"\t                   (_)     | |     | |\n",
-		"\t                    _ _ __ | |_ ___| |\n",
-		"\t                   | | '_ \\| __/ _ \\ |\n",
-		"\t                   | | | | | ||  __/ |\n",
-		"\t                   |_|_| |_|\\__\\___|_|\n",
-		"\t\n",
-		"\t========================================================================\n",
-		"\tName        :" + "intel-aws-db-instance-deny-unapproved-storage-types.sentinel\n",
-		"\tCategory    :" + "Infrastructure (IaaS)\n",
-		"\tProvider    :" + "hashicorp/aws\n",
-		"\tResource    :" + "aws_db_instance\n",
-		"\tParameter   :" + "storage_encrypted\n",
-		"\tCheck       :" + "storage_encrypted is\n",
-		"\t\n",
-		"\ttrue\n",
-	)
-	return null
-}
-
-violations = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\tRESOURCE VIOLATIONS\n",
-		"\tThe configured server uses unencrypted storage\n",
-		"\t========================================================================\t",
-	)
-	for input.violations as violation {
-		print(
-			"\t",
-			"name       :" + violation.name + "\n\t",
-			"type       :" + violation.type + "\n\t",
-			"address    :" + violation.address + "\n\t",
-			"message    :" + violation.message + "\t\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	if (input.violations is not empty) {
-		print(
-			"\t",
-			"Resources out of compliance: " + string(length(input.violations)) + "\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	return null
-}
-
 doc = {
-	"id":       "awsdbinstance01",
-	"resource": "aws_db_instance",
-	"name":     "Server must use encrypted storage",
+	"allowed":   null,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " uses unencrypted storage",
+	"file_name": "intel-aws-db-instance-deny-unapproved-storage-types.sentinel",
+	"name":      "awsdbinstance01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
+	"parameter": "storage_encrypted",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_db_instance",
+	"violation": "The configured server must use encrypted storage",
 }
 
 // Filter resources by type
@@ -92,18 +34,17 @@ violators = filter all_resources as _, r {
 
 // Build a summary report
 summaryreport = {
-	"id":   doc.id,
 	"name": doc.name,
 	"violations": map violators as _, violation {
 		{
 			"name":    violation.name,
 			"address": violation.address,
 			"type":    violation.type,
-			"message": violation.name + " uses unencrypted storage.",
+			"message": violation.name + doc.error,
 		}
 	},
 }
 
 main = rule {
-	summary(summaryreport)
+	policy_summary.summary(summaryreport, doc)
 }

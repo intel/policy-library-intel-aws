@@ -1,4 +1,5 @@
 import "tfplan/v2" as tfplan
+import "policy_summary"
 
 param valid_actions default [
 	["no-op"],
@@ -6,79 +7,17 @@ param valid_actions default [
 	["update"],
 ]
 
-summary = func(input) {
-	result = false
-	if input.violations is empty {
-		return true
-	} else {
-		log(input)
-	}
-	return result
-}
-
-log = func(input) {
-	header(input)
-	violations(input)
-	return null
-}
-
-header = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\t                    _       _       _ \n",
-		"\t                   (_)     | |     | |\n",
-		"\t                    _ _ __ | |_ ___| |\n",
-		"\t                   | | '_ \\| __/ _ \\ |\n",
-		"\t                   | | | | | ||  __/ |\n",
-		"\t                   |_|_| |_|\\__\\___|_|\n",
-		"\t\n",
-		"\t========================================================================\n",
-		"\tName        :" + "intel-aws-db-instance-deny-unapproved-storage-types.sentinel\n",
-		"\tCategory    :" + "Infrastructure (IaaS)\n",
-		"\tProvider    :" + "hashicorp/aws\n",
-		"\tResource    :" + "aws_db_instance\n",
-		"\tParameter   :" + "storage_type\n",
-		"\tCheck       :" + "storage_type contains\n",
-		"\t\n",
-		"\tio1\n",
-	)
-	return null
-}
-
-violations = func(input) {
-	print(
-		"\t========================================================================\n",
-		"\tRESOURCE VIOLATIONS\n",
-		"\tThe configured server type should use an optimized storage type\n",
-		"\t========================================================================\t",
-	)
-	for input.violations as violation {
-		print(
-			"\t",
-			"name       :" + violation.name + "\n\t",
-			"type       :" + violation.type + "\n\t",
-			"address    :" + violation.address + "\n\t",
-			"message    :" + violation.message + "\t\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	if (input.violations is not empty) {
-		print(
-			"\t",
-			"Resources out of compliance: " + string(length(input.violations)) + "\n",
-			"\t------------------------------------------------------------------------\t",
-		)
-	}
-	return null
-}
-
-// Allowed server resource types
-allowed_storage_types = "io1"
-
 doc = {
-	"id":       "awsdbinstance01",
-	"resource": "aws_db_instance",
-	"name":     "Server must use approved storage type",
+	"allowed":   "io1",
+	"category":  "Infrastructure (IaaS)",
+	"error":     " is not an allowed storage type.",
+	"file_name": "intel-aws-db-instance-deny-unapproved-storage-types.sentinel",
+	"name":      "awsdbinstance01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-postgresql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mssql/blob/main/policies.md\n" + "\thttps://github.com/intel/terraform-intel-aws-mariadb/blob/main/policies.md\n",
+	"parameter": "storage_type",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_db_instance",
+	"violation": "The configured server must use approved storage type",
 }
 
 // Filter resources by type
@@ -90,23 +29,22 @@ all_resources = filter tfplan.resource_changes as _, rc {
 
 // Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	r.change.after.storage_type not in allowed_storage_types
+	r.change.after.storage_type not in doc.allowed
 }
 
 // Build a summary report
 summaryreport = {
-	"id":   doc.id,
 	"name": doc.name,
 	"violations": map violators as _, violation {
 		{
 			"name":    violation.name,
 			"address": violation.address,
 			"type":    violation.type,
-			"message": violation.change.after.storage_type + " is not an allowed storage type.",
+			"message": violation.change.after.storage_type + doc.error,
 		}
 	},
 }
 
 main = rule {
-	summary(summaryreport)
+	policy_summary.summary(summaryreport, doc)
 }
