@@ -3,7 +3,7 @@ import "static" "approved" {
   format = "json"
 }
 
-import "module "policy_summary" {
+import "module" "policy_summary" {
   source = "./modules/policysummary.sentinel"
 }
 
