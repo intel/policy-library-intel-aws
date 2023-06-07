@@ -1,4 +1,4 @@
-# Ensure aws_db_instance are configured with storage encryption
+# aws_db_instance deny unencrypted storage types (Security)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

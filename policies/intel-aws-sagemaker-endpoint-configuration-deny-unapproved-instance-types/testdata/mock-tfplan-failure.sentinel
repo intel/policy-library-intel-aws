@@ -1,0 +1,57 @@
+resource_changes = {
+	"aws_sagemaker_endpoint_configuration.example_endpoint_configuration": {
+		"address": "aws_sagemaker_endpoint_configuration.example_endpoint_configuration",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"async_inference_config": [],
+				"data_capture_config":    [],
+				"kms_key_arn":            null,
+				"name":                   "example-endpoint-configuration",
+				"production_variants": [
+					{
+						"accelerator_type":                                  null,
+						"container_startup_health_check_timeout_in_seconds": null,
+						"core_dump_config":                                  [],
+						"enable_ssm_access":                                 null,
+						"initial_instance_count":                            1,
+						"initial_variant_weight":                            1,
+						"instance_type":                                     "ml.t2.medium",
+						"model_data_download_timeout_in_seconds":            null,
+						"model_name":                                        "example-model",
+						"serverless_config":                                 [],
+						"variant_name":                                      "example-variant",
+					},
+				],
+				"shadow_production_variants": [],
+				"tags": null,
+			},
+			"after_unknown": {
+				"arn": true,
+				"async_inference_config": [],
+				"data_capture_config":    [],
+				"id":          true,
+				"name_prefix": true,
+				"production_variants": [
+					{
+						"core_dump_config":  [],
+						"serverless_config": [],
+						"volume_size_in_gb": true,
+					},
+				],
+				"shadow_production_variants": [],
+				"tags_all":                   true,
+			},
+			"before": null,
+		},
+		"deposed":        "",
+		"index":          null,
+		"mode":           "managed",
+		"module_address": "",
+		"name":           "example_endpoint_configuration",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_sagemaker_endpoint_configuration",
+	},
+}
