@@ -1,4 +1,4 @@
-# Ensure aws_db_instance are configured with a high performance storage type
+# aws_db_instance deny unapproved storage types (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

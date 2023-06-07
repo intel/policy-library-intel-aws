@@ -1,0 +1,53 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.awssagemaker,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " uses an unallowed server type.",
+	"file_name": "intel-aws-sagemaker-endpoint-configuration-deny-unapproved-instance-types.sentinel",
+	"name":      "awssagemaker01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/policies.md",
+	"parameter": "instance_type",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_sagemaker_endpoint_configuration",
+	"violation": "The configured server type should use the latest generation of Intel Xeon Scalable processors",
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	all r.change.after.production_variants as _, production_variants {
+		production_variants.instance_type not in doc.allowed
+	}
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

@@ -1,4 +1,4 @@
-# Ensure aws_autoscaling_group use only Intel optimized instance types (codename Ice Lake)
+# aws_autoscaling_group deny unapproved instance types (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

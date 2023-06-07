@@ -1,4 +1,4 @@
-# Ensure databricks_cluster use only Intel optimized instance types (codename Ice Lake)
+# aws_databricks_cluster enforce spark_conf (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

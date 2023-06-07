@@ -1,4 +1,4 @@
-# Ensure eks_node_group use only Intel optimized instance types (codename Ice Lake)
+# aws_eks_node_group deny unapproved instance types (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

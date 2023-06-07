@@ -1,4 +1,4 @@
-# Ensure aws_instance use only Intel optimized instance types (codename Ice Lake)
+# aws_instance deny unapproved instance types (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

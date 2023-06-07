@@ -1,4 +1,4 @@
-# Ensure databricks_cluster use only Intel optimized instance types (codename Ice Lake)
+# databricks_cluster deny unapproved runtime engines (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|

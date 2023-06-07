@@ -1,4 +1,4 @@
-# aws_launch_templates deny unapproved instance types (Optimize)
+# aws_sagemaker_endpoint_configuration deny unapproved instance types (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|
@@ -6,7 +6,7 @@
 
 ## Description
 
-Server performance is one of the most important components for enterprise applications experience. Deploying the AWS launch templates on Intel Xeon 3rd Generation Scalable processors (code-named Ice Lake) provides a seamless performance foundation.
+Deploying the AWS Sagemaker endpoints on Intel Xeon 3rd Generation Scalable processors (code-named Ice Lake) provides a seamless performance foundation for your AI/ML workloads.
 
 This Sentinel policy checks that the instances are configured with the recommended instance types to deliver optimal cost and performance for your business criticial servers.
 
@@ -24,24 +24,23 @@ This Sentinel policy checks that the instances are configured with the recommend
                            |_|_| |_|\__\___|_|
 
         ========================================================================
-        Name        :intel-aws-launch-template-deny-unapproved-instance-types.sentinel
-        Category    :Platform (PaaS)
+        Name        :intel-aws-sagemaker-endpoint-configuration-deny-unapproved-instance-types.sentinel
+        Category    :Infrastructure (IaaS)
         Provider    :hashicorp/aws
-        Resource    :aws_launch_template
+        Resource    :aws_sagemaker_endpoint_configuration
         Parameter   :instance_type
-        Check       :instance_type contains
-
-        For a list of allowed instance types see:
-        https://github.com/intel/terraform-intel-aws-eks/blob/main/policies.md
+        ========================================================================
+        For a list of allowed parameter options see:
+        https://github.com/intel/terraform-intel-aws-sagemaker-endpoint/blob/main/policies.md
 
         ========================================================================
         RESOURCE VIOLATIONS
-        The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)
+        The configured server type should use the latest generation of Intel Xeon Scalable processors
         ========================================================================
-         name       :foo
-         type       :aws_launch_template
-         address    :aws_launch_template.foo
-         message    :NOTm6i.large is not an allowed server type.
+         name       : example_endpoint_configuration
+         type       : aws_sagemaker_endpoint_configuration
+         address    : aws_sagemaker_endpoint_configuration.example_endpoint_configuration
+         message    : example_endpoint_configuration uses an unallowed server type.
         ------------------------------------------------------------------------
          Resources out of compliance: 1
         ------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# Ensure aws_elasticache_replication_group use only Intel optimized instance types (codename Cascade Lake)
+# aws_elasticache_replication_group deny unapproved instance types (Optimize)
 
 | Provider            | Category                 |
 |---------------------|--------------------------|
