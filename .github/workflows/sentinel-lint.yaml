@@ -1,33 +1,43 @@
 name: Sentinel Lint
 on:
-  push:
-  pull_request:
-    branches:
-      - main
+  - pull_request
+
 jobs:
 
   sentinel-format:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Install Sentinel
-        uses: bloominlabs/setup-hashicorp-releases@v1
+        uses: bloominlabs/setup-hashicorp-releases@v2
         with:
           package: sentinel
-          version: ^0.18.11
+          version: ^0.22.0
       - name: Sentinel Format
-        run: sentinel fmt -check=true $(find . -name "*.sentinel" -type f)
+        run: sentinel fmt -write=true $(find . -name "*.sentinel" -type f)
+      - name: Commit Sentinel Format Changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: 'Commit from GitHub Actions for Sentinel format'
   sentinel-test:
     needs: sentinel-format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Install Sentinel
-        uses: bloominlabs/setup-hashicorp-releases@v1
+        uses: bloominlabs/setup-hashicorp-releases@v2
         with:
           package: sentinel
-          version: ^0.18.11
+          version: ^0.22.0
       - name: Sentinel Test
-        run: sentinel test $(find . -name "*.sentinel" -type f ! -path "*/testdata/*")
+        run: find . -name "*.sentinel" -type f ! -path "*/testdata/*" -execdir sentinel test \;
+        
