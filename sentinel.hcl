@@ -29,7 +29,7 @@ policy "intel-aws-databricks-cluster-enforce-spark-conf" {
 
 policy "intel-aws-db-instance-deny-unapproved-instance-types" {
   source = "./policies/intel-aws-db-instance-deny-unapproved-instance-types/intel-aws-db-instance-deny-unapproved-instance-types.sentinel"
-  enforcement_level = "advisory"
+  enforcement_level = "soft-mandatory"
 }
 
 policy "intel-aws-db-instance-deny-unapproved-storage-types" {
