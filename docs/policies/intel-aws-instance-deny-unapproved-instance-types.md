@@ -6,7 +6,7 @@
 
 ## Description
 
-Server performance is one of the most important components for enterprise applications experience. Deploying the Amazon Instances on Intel Xeon 3rd Generation Scalable processors (code-named Ice Lake) provides a seamless performance foundation.
+Server performance is one of the most important components for enterprise applications experience. Deploying the Amazon Instances on Intel Xeon 4th Generation Scalable processors (code-named Sapphire Rapids) provides a seamless performance foundation.
 
 This Sentinel policy checks that the instances are configured with the recommended instance types to deliver optimal cost and performance for your business criticial servers.
 

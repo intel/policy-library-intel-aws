@@ -9,7 +9,7 @@ param valid_actions default [
 ]
 
 doc = {
-	"allowed":   approved.awseks,
+	"allowed":   approved.awsautoscaling,
 	"category":  "Infrastructure (IaaS)",
 	"error":     " is not an allowed server type.",
 	"file_name": "intel-aws-autoscaling-group-deny-unapproved-instance-types.sentinel",
@@ -28,21 +28,9 @@ all_resources = filter tfplan.resource_changes as _, rc {
 		rc.change.actions in valid_actions
 }
 
-
-// Filter null values
-null_handling = filter all_resources as _, r {
-	all r.change.after.mixed_instances_policy as _, mixed_instance_policy {
-		all mixed_instance_policy.launch_template as _, launch_template {
-			all launch_template.override as _, override {
-				override.instance_type is not null
-			}
-		}
-	}
-}
-
 // Filter resources that violate a given condition
-violators = filter null_handling as _, r {
-	all r.change.after.mixed_instances_policy as _, mixed_instance_policy {
+violators = filter all_resources as _, r {
+	all r.change.after.mixed_instances_policy else [] as _, mixed_instance_policy {
 		all mixed_instance_policy.launch_template as _, launch_template {
 			all launch_template.override as _, override {
 				override.instance_type not in doc.allowed
