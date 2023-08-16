@@ -28,14 +28,9 @@ all_resources = filter tfplan.resource_changes as _, rc {
 		rc.change.actions in valid_actions
 }
 
-// Filter null values
-null_handling = filter all_resources as _, r {
-	r.change.after.node_type_id is not null
-}
-
 // Filter resources that violate a given condition
-violators = filter null_handling as _, r {
-	r.change.after.node_type_id not in doc.allowed
+violators = filter all_resources as _, r {
+	r.change.after.node_type_id else [] not in doc.allowed
 }
 
 // Build a summary report

@@ -29,7 +29,7 @@ all_resources = filter tfplan.resource_changes as _, rc {
 
 // Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	r.change.after.storage_type not in doc.allowed
+	r.change.after.storage_type else [] not in doc.allowed
 }
 
 // Build a summary report

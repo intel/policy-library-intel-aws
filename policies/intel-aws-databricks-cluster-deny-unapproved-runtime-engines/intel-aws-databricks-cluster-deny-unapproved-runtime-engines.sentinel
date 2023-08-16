@@ -29,8 +29,8 @@ all_resources = filter tfplan.resource_changes as _, rc {
 }
 
 // Filter resources that violate a given condition
-violators = filter null_handling as _, r {
-	r.change.after.runtime_engine not in doc.allowed
+violators = filter all_resources as _, r {
+	r.change.after.runtime_engine else [] not in doc.allowed
 }
 
 // Build a summary report
