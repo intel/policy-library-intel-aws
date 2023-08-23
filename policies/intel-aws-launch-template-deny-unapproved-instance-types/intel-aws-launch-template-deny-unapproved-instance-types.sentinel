@@ -9,7 +9,7 @@ param valid_actions default [
 ]
 
 doc = {
-	"allowed":   approved.awsinstance,
+	"allowed":   approved.awslaunchtemplate,
 	"category":  "Platform (PaaS)",
 	"error":     " is not an allowed server type.",
 	"file_name": "intel-aws-launch-template-deny-unapproved-instance-types.sentinel",
