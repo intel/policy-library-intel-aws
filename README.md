@@ -19,7 +19,7 @@ See https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/mana
 
 1. Log in to github and browse to the policy library repository: https://github.com/intel/policy-library-intel-aws
 2. Fork the repository: https://docs.github.com/en/get-started/quickstart/fork-a-repo
-3. Log into TFE or TFCB and add the newly forked repository as a Version Controlled policy set: https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#create-policy-sets
+3. Log into Terraform Enterprise or Terraform Cloud for Business and add the newly forked repository as a Version Controlled policy set: https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#create-policy-sets
 4. Apply the policy set to your workspaces or globally as desired
 5. Update the `sentinel.hcl` to **soft-mandatory** or **hard-mandatory** policies to harden governance and force rather than inform developers
 6. When new versions are released simply sync your forked repository to be updated to the latest recommended instance list: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork (Note this will set policies back to **advisory**)
