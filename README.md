@@ -8,7 +8,7 @@
 
 ## Sentinel Policies for AWS Modules
 
-This library, provides prescriptive Sentinel policies that optimize Terraform deployed resources on Amazon Web Services (AWS). The policies that are contained in this library are based on the [Open-Source Database Tuning Guide on 3rd Generation Intel® Xeon® Scalable Processors Based Platform](https://www.intel.com/content/dam/develop/external/us/en/documents/Open-Source-Database-Tuning-Guide-on-3rd-Generation-Intel-Xeon-Scalable-Processors.pdf). Terraform Cloud and Enterprise users can use the policies in this library to enable intelligent developer decisions when deploying cloud infrastructure by choosing the best price for performance instance types for their cloud resources. 
+This library, provides prescriptive Sentinel policies that optimize Terraform deployed resources on Amazon Web Services (AWS). The policies that are contained in this library are based on the latest performance and benchmarking tests that can be found at https://www.intel.com/content/www/us/en/developer/topic-technology/cloud/cloud-performance.html?f:@stm_10381_en=%5BAmazon%20Web%20Services%5D. Terraform Cloud and Enterprise users can use the policies in this library to enable intelligent developer decisions when deploying cloud infrastructure by choosing the best price for performance instance types for their cloud resources. 
 
 ## Getting Started
 
