@@ -690,6 +690,11 @@
     "x2iedn.32xlarge",
     "x2idn.16xlarge",
     "x2idn.24xlarge",
-    "x2idn.32xlarge"
+    "x2idn.32xlarge",
+    "z1d.large",
+    "z1d.xlarge",
+    "z1d.2xlarge",
+    "z1d.3xlarge",
+    "z1d.12xlarge"
   ]
 }
