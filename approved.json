@@ -688,8 +688,8 @@
     "x2iedn.16xlarge",
     "x2iedn.24xlarge",
     "x2iedn.32xlarge",
-		"x2idn.16xlarge",
-		"x2idn.24xlarge",
-		"x2idn.32xlarge"
+    "x2idn.16xlarge",
+    "x2idn.24xlarge",
+    "x2idn.32xlarge"
   ]
 }
