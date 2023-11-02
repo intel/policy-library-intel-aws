@@ -1,0 +1,8 @@
+docs:
+  - [ ] Create docs for EMR
+
+policy:
+  - [ ] Fix policy for EMR (Dillon)
+
+approved:
+  - [x] Add instaces to approved.json under `awsemr`
