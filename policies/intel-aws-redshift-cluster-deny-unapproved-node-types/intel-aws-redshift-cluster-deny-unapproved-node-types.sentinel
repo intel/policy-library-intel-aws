@@ -12,7 +12,7 @@ doc = {
 	"allowed":   approved.awsredshift,
 	"category":  "Infrastructure (IaaS)",
 	"error":     " is not an allowed server type.",
-	"file_name": "intel-aws-kafka-cluster-deny-unapproved-node-types.sentinel",
+	"file_name": "intel-aws-redshift-cluster-deny-unapproved-node-types.sentinel",
 	"name":      "awsredshift01",
 	"md_url":    "<MD_URL_HERE>\n",
 	"parameter": "node_type",

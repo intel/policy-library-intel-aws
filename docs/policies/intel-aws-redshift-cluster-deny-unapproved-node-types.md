@@ -24,7 +24,7 @@ This Sentinel policy checks that the instances are configured with the recommend
                            |_|_| |_|\__\___|_|
 
         ========================================================================
-        Name        :intel-aws-kafka-cluster-deny-unapproved-node-types.sentinel
+        Name        :intel-aws-redshift-cluster-deny-unapproved-node-types.sentinel
         Category    :Infrastructure (IaaS)
         Provider    :hashicorp/aws
         Resource    :aws_redshift_cluster
