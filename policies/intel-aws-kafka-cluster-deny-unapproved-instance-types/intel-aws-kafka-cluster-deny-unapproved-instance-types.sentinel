@@ -9,15 +9,15 @@ param valid_actions default [
 ]
 
 doc = {
-	"allowed":   approved.awsemr,
+	"allowed":   approved.awskafka,
 	"category":  "Infrastructure (IaaS)",
 	"error":     " uses a disallowed server type.",
-	"file_name": "intel-aws-emr-instance-group-deny-unapproved-instance-types.sentinel",
-	"name":      "awsemr01",
-	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n",
+	"file_name": "intel-aws-kafka-cluster-deny-unapproved-instance-types.sentinel",
+	"name":      "awskfaka01",
+	"md_url":    "<MD_URL_HERE>\n",
 	"parameter": "instance_type",
 	"provider":  "hashicorp/aws",
-	"resource":  "aws_emr_cluster",
+	"resource":  "aws_msk_cluster",
 	"violation": "The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)",
 }
 
@@ -28,10 +28,9 @@ all_resources = filter tfplan.resource_changes as _, rc {
 		rc.change.actions in valid_actions
 }
 
-// Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	all r.change.after.aws_emr_cluster as _, emr_type {
-		emr_type.instance_type not in doc.allowed
+	all r.change.after.broker_node_group_info as _, broker_node_group_info {
+		broker_node_group_info.instance_type not in doc.allowed
 	}
 }
 
