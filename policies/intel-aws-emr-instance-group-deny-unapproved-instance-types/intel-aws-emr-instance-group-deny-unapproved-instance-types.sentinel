@@ -1,0 +1,53 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.awsemr,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " uses a disallowed server type.",
+	"file_name": "intel-aws-emr-instance-group-deny-unapproved-instance-types.sentinel",
+	"name":      "awsemr01",
+	"md_url":    "https://github.com/intel/terraform-intel-aws-mysql/blob/main/policies.md\n",
+	"parameter": "instance_type",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_emr_cluster",
+	"violation": "The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)",
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	all r.change.after.aws_emr_cluster as _, emr_type {
+		emr_type.instance_type not in doc.allowed
+	}
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

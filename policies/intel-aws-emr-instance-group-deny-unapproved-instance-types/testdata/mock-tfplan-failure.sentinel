@@ -1,0 +1,106 @@
+terraform_version = "1.6.2"
+
+resource_changes = {
+	"module.emr_instance_fleet.aws_emr_cluster.this[0]": {
+		"address": "module.emr_instance_fleet.aws_emr_cluster.this[0]",
+		"change": {
+			"actions": [
+				"delete",
+				"create",
+			],
+			"after": {
+				"additional_info": null,
+				"applications": [
+					"spark",
+					"trino",
+				],
+				"auto_termination_policy": [
+					{
+						"idle_timeout": 3600,
+					},
+				],
+				"autoscaling_role": null,
+				"bootstrap_action": [
+					{
+						"args": [
+							"Hello World!",
+						],
+						"name": "Just an example",
+						"path": "file:/bin/echo",
+					},
+				],
+				"configurations":      null,
+				"configurations_json": "[{\"Classification\":\"spark-env\",\"Configurations\":[{\"Classification\":\"export\",\"Properties\":{\"JAVA_HOME\":\"/usr/lib/jvm/java-1.8.0\"}}],\"Properties\":{}}]",
+				"core_instance_fleet": [
+					{
+						"instance_type_configs": [
+							{
+								"bid_price": "",
+								"bid_price_as_percentage_of_on_demand_price": 100,
+								"configurations":                             [],
+								"instance_type":                              "NOTINTEL1",
+								"weighted_capacity":                          2,
+							},
+							{
+								"bid_price": "",
+								"bid_price_as_percentage_of_on_demand_price": 100,
+								"configurations":                             [],
+								"ebs_config": [
+									{
+										"iops":                 null,
+										"size":                 64,
+										"type":                 "gp3",
+										"volumes_per_instance": 1,
+									},
+								],
+								"instance_type":     "NOTINTEL2",
+								"weighted_capacity": 2,
+							},
+							{
+								"bid_price": "",
+								"bid_price_as_percentage_of_on_demand_price": 60,
+								"configurations":                             [],
+								"instance_type":                              "NOTINTEL3",
+								"weighted_capacity":                          1,
+							},
+						],
+						"name": "core-fleet",
+						"target_on_demand_capacity": 2,
+						"target_spot_capacity":      2,
+					},
+				],
+				"custom_ami_id":        null,
+				"ebs_root_volume_size": 64,
+				"log_encryption_kms_key_id": null,
+				"master_instance_fleet": [
+					{
+						"instance_type_configs": [
+							{
+								"bid_price": "",
+								"bid_price_as_percentage_of_on_demand_price": 100,
+								"configurations":                             [],
+								"instance_type":                              "NOTINTEL5",
+								"weighted_capacity":                          1,
+							},
+						],
+						"launch_specifications": [],
+						"name":                  "master-fleet",
+						"target_on_demand_capacity": 1,
+						"target_spot_capacity":      0,
+					},
+				],
+				"name": "config-instance-fleet",
+				"placement_group_config": null,
+				"release_label":          "emr-6.14.0",
+			},
+		},
+		"deposed":        "",
+		"index":          0,
+		"mode":           "managed",
+		"module_address": "module.emr_instance_fleet",
+		"name":           "this",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_emr_cluster",
+	},
+}
+
