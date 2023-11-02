@@ -1,14 +1,19 @@
 docs:
   - [ ] Create docs for EMR
   - [x] Create docs for `awskafka`
+  - [x] Create docs for `redshift`
+  - [ ] Find out what generation `broadwell` is for the documentation.
 
 policy:
   - [ ] Fix policy for EMR (Dillon)
   - [x] Add policy for `awskafka`
+  - [x] Add policy for `awsredshift`
 
 approved:
   - [x] Add instaces to approved.json under `awsemr`
   - [x] Add instances to approved.json under `awskafka`
+  - [x] Add instances to approved.json under `awsredshift`
 
 urls:
   - [ ] Update policy readme for [kafka](docs/policies/intel-aws-kafka-cluster-deny-unapproved-instance-types.md) and in the .sentinel file. Search for <MD_URL_HERE>
+  - [ ] Update policy readme for [redshift] in the docs and the .sentinel file. Search for <MD_URL_HERE>

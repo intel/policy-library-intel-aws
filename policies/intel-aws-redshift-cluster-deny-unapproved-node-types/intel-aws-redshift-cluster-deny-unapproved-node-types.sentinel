@@ -1,0 +1,51 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.awsredshift,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " is not an allowed server type.",
+	"file_name": "intel-aws-redshift-cluster-deny-unapproved-node-types.sentinel",
+	"name":      "awsredshift01",
+	"md_url":    "<MD_URL_HERE>\n",
+	"parameter": "node_type",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_redshift_cluster",
+	"violation": "The configured server type should use an Intel Xeon <BROADWELL GENERATION> Generation Scalable processor (code-named Broadwell)",
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+// Filter resources that violate a given condition
+violators = filter all_resources as _, r {
+	r.change.after.node_type not in doc.allowed
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.change.after.node_type + doc.error,
+		}
+	},
+}
+
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}
