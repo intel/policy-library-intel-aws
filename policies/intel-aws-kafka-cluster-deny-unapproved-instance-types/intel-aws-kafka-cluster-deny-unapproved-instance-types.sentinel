@@ -1,0 +1,52 @@
+import "tfplan/v2" as tfplan
+import "approved"
+import "policy_summary"
+
+param valid_actions default [
+	["no-op"],
+	["create"],
+	["update"],
+]
+
+doc = {
+	"allowed":   approved.awskafka,
+	"category":  "Infrastructure (IaaS)",
+	"error":     " uses a disallowed server type.",
+	"file_name": "intel-aws-kafka-cluster-deny-unapproved-instance-types.sentinel",
+	"name":      "awskfaka01",
+	"md_url":    "<MD_URL_HERE>\n",
+	"parameter": "instance_type",
+	"provider":  "hashicorp/aws",
+	"resource":  "aws_msk_cluster",
+	"violation": "The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)",
+}
+
+// Filter resources by type
+all_resources = filter tfplan.resource_changes as _, rc {
+	rc.type is doc.resource and
+		rc.mode is "managed" and
+		rc.change.actions in valid_actions
+}
+
+violators = filter all_resources as _, r {
+	all r.change.after.broker_node_group_info as _, broker_node_group_info {
+		broker_node_group_info.instance_type not in doc.allowed
+	}
+}
+
+// Build a summary report
+summaryreport = {
+	"name": doc.name,
+	"violations": map violators as _, violation {
+		{
+			"name":    violation.name,
+			"address": violation.address,
+			"type":    violation.type,
+			"message": violation.name + doc.error,
+		}
+	},
+}
+
+main = rule {
+	policy_summary.summary(summaryreport, doc)
+}

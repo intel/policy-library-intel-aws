@@ -1,0 +1,33 @@
+terraform_version = "1.6.2"
+
+resource_changes = {
+	"module.msk_cluster.aws_msk_cluster.this[0]": {
+		"address": "module.msk_cluster.aws_msk_cluster.this[0]",
+		"change": {
+			"actions": [
+				"create",
+			],
+			"after": {
+				"broker_node_group_info": [
+					{
+						"az_distribution": "DEFAULT",
+						"instance_type":   "kafka.m5.24xlarge",
+					},
+				],
+				"client_authentication": [],
+				"cluster_name":          "ex-config",
+				"enhanced_monitoring": "DEFAULT",
+				"kafka_version":       "3.4.0",
+				"number_of_broker_nodes": 3,
+			},
+		},
+		"deposed":        "",
+		"index":          0,
+		"mode":           "managed",
+		"module_address": "module.msk_cluster",
+		"name":           "this",
+		"provider_name":  "registry.terraform.io/hashicorp/aws",
+		"type":           "aws_msk_cluster",
+	},
+}
+

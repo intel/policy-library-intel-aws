@@ -1,8 +1,14 @@
 docs:
   - [ ] Create docs for EMR
+  - [x] Create docs for `awskafka`
 
 policy:
   - [ ] Fix policy for EMR (Dillon)
+  - [x] Add policy for `awskafka`
 
 approved:
   - [x] Add instaces to approved.json under `awsemr`
+  - [x] Add instances to approved.json under `awskafka`
+
+urls:
+  - [ ] Update policy readme for [kafka](docs/policies/intel-aws-kafka-cluster-deny-unapproved-instance-types.md) and in the .sentinel file. Search for <MD_URL_HERE>
