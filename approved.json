@@ -707,5 +707,9 @@
     "kafka.m5.16xlarge",
     "kafka.m5.24xlarge",
     "kafka.t3.small"
+  ],
+  "awsredshift": [
+    "dc2.large",
+    "dc2.8xlarge"
   ]
 }
