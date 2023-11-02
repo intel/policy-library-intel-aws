@@ -69,8 +69,8 @@ resource_changes = {
 						"target_spot_capacity":      2,
 					},
 				],
-				"custom_ami_id":        null,
-				"ebs_root_volume_size": 64,
+				"custom_ami_id":             null,
+				"ebs_root_volume_size":      64,
 				"log_encryption_kms_key_id": null,
 				"master_instance_fleet": [
 					{
@@ -103,4 +103,3 @@ resource_changes = {
 		"type":           "aws_emr_cluster",
 	},
 }
-

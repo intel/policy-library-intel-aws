@@ -14,10 +14,10 @@ resource_changes = {
 						"instance_type":   "kafka.m5.24xlarge",
 					},
 				],
-				"client_authentication": [],
-				"cluster_name":          "ex-config",
-				"enhanced_monitoring": "DEFAULT",
-				"kafka_version":       "3.4.0",
+				"client_authentication":  [],
+				"cluster_name":           "ex-config",
+				"enhanced_monitoring":    "DEFAULT",
+				"kafka_version":          "3.4.0",
 				"number_of_broker_nodes": 3,
 			},
 		},
@@ -30,4 +30,3 @@ resource_changes = {
 		"type":           "aws_msk_cluster",
 	},
 }
-
