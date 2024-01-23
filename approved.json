@@ -338,7 +338,7 @@
     "c6in.8xlarge",
     "c6in.xlarge",
     "c6in.large",
-    "c6in.4xlarge"
+    "c6in.4xlarge",
     "i4i.16xlarge",
     "i4i.32xlarge",
     "i4i.2xlarge",
@@ -400,7 +400,7 @@
     "m6in.8xlarge",
     "m6in.xlarge",
     "m6in.large",
-    "m6in.4xlarge"
+    "m6in.4xlarge",
     "r7i.large",
     "r7i.xlarge",
     "r7i.2xlarge",
@@ -471,7 +471,7 @@
     "x2iedn.8xlarge",
     "x2iedn.xlarge",
     "x2iedn.metal",
-    "x2iedn.4xlarge"
+    "x2iedn.4xlarge",
     "trn1.32xlarge",
     "trn1.2xlarge"
   ],
