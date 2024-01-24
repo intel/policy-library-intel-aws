@@ -1,5 +1,15 @@
 import "static" "approved" {
-  source = "./approved.json"
+  source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/approved.json"
+  format = "json"
+}
+
+import "static" "tdx" {
+  source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/tdx.json"
+  format = "json"
+}
+
+import "static" "amx" {
+  source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/amx.json"
   format = "json"
 }
 
