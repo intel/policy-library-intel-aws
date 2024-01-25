@@ -29,10 +29,10 @@ See https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/mana
 
 If you are using the Terraform Registry you must add an import block to your `sentinel.hcl` file in order for these policies to function. Copy the code snippet below and paste it into your `sentinel.hcl` file:
 
-  `import "static" "approved" {`
-  `source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/approved.json"`
-  `format = "json"`
-  `}`
+`import "static" "approved" {`
+`source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/approved.json"`
+`format = "json"`
+`}`
 
 ## How to Use
 
@@ -42,10 +42,10 @@ Intel policy libraries are designed by default to automatically use the latest l
 
 In order to modify the list of allowed instance types for a resource you must first change the sourcing of the `approved.json` in the `sentinel.hcl` to : 
 
-  `import "static" "approved" {`
-  `source = "./approved.json"`
-  `format = "json"`
-  `}`
+`import "static" "approved" {`
+`source = "./approved.json"`
+`format = "json"`
+`}`
 
 Then identify the relevant content within the `approved.json` file. Do this by browsing to the `intel-cloud-resource-unapproved-instance-type` policy you would like to modify in the `policies` folder. For this example, note the value *awsautoscaling* for `doc.allowed` to identify the section to modify: 
 
