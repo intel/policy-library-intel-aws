@@ -12,6 +12,13 @@ This library provides prescriptive Sentinel policies that restrict Terraform dep
 
 ## Getting Started
 
+**Required Versions**
+
+Sentinel: [>=0.24.0[](https://developer.hashicorp.com/sentinel/install)
+Terraform Cloud : Use Enhanced Policy Sets with a Sentinel version [>=0.24.0[](https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets)
+
+**Set Up**
+
 To get started using these policies fork the AWS Policy Library from the github repository. This will ensure that all necessary components for the policies are included and allows you to easily stay up to date when new versions of the recommended instance list or new policies are released. 
 
 Note that all policies are set to a default of **advisory** mode and will NOT impact deployments until changed to either **soft-mandatory** or **hard-mandatory**. 
