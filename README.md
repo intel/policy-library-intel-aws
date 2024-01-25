@@ -15,6 +15,7 @@ This library provides prescriptive Sentinel policies that restrict Terraform dep
 **Required Versions**
 
 Sentinel : [>=0.24.0](https://developer.hashicorp.com/sentinel/install)
+
 Terraform Cloud : Use Enhanced Policy Sets with a Sentinel version [>=0.24.0](https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets)
 
 **Set Up**
@@ -28,7 +29,7 @@ See https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/mana
 2. Fork the repository: https://docs.github.com/en/get-started/quickstart/fork-a-repo
 3. Log into Terraform Enterprise or Terraform Cloud for Business and add the newly forked repository as a Version Controlled policy set: https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets#create-policy-sets
 4. Ensure Policy Set is set to `Enhanced` and that the `Runtime Version` is at least `0.24.0` . Then apply the policy set to your workspaces or globally as desired
-5. Update the `sentinel.hcl` to **soft-mandatory** or **hard-mandatory** policies to harden governance and force rather than inform developers
+5. Update the `sentinel.hcl` policy enforcement values to **soft-mandatory** or **hard-mandatory** to harden governance and force rather than inform developers
 6. When new policies are released simply sync your forked repository to receive the new policies and instance types: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork (Note this will set policies back to **advisory**)
 7. New instance lists will automatically be synced from the main Intel repository without syncing the fork. This is done with a remote source in the `sentinel.hcl` and can be modified. See the *How to Use* section for more information.
 
