@@ -29,10 +29,10 @@ See https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/mana
 
 If you are using the Terraform Registry you must add an import block to your `sentinel.hcl` file in order for these policies to function. Copy the code snippet below and paste it into your `sentinel.hcl` file:
 
-`import "static" "approved" {`
-`source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/approved.json"`
-`format = "json"`
-`}`
+```import "static" "approved" {```
+```source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/approved.json"```
+```format = "json"```
+```}```
 
 ## How to Use
 
