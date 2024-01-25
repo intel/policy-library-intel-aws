@@ -59,7 +59,7 @@ format = "json"
 }
 ```
 
-Then identify the relevant content within the `approved.json` file. Do this by browsing to the `intel-cloud-resource-unapproved-instance-type` policy you would like to modify in the `policies` folder. For this example, note the value *awsautoscaling* for `doc.allowed` to identify the section to modify: 
+Then identify the relevant content within the `approved.json` file. Do this by browsing to the `intel-cloud-resource-unapproved-instance-type.sentinel` policy you would like to modify in the `policies` folder. For this example, note the value *awsautoscaling* for `doc.allowed` to identify the section of the `approved.json` to modify: 
 
 ```
 doc = {
