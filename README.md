@@ -14,7 +14,7 @@ This library provides prescriptive Sentinel policies that restrict Terraform dep
 
 **Required Versions**
 
-Sentinel : [>=0.24.0](https://developer.hashicorp.com/sentinel/install)
+Sentinel : [>=0.24.0](https://developer.hashicorp.com/sentinel/install)  
 Terraform Cloud : Use Enhanced Policy Sets with a Sentinel version [>=0.24.0](https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/manage-policy-sets)
 
 
