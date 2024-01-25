@@ -8,7 +8,7 @@
 
 ## Sentinel Policies for AWS Modules
 
-This library provides prescriptive Sentinel policies that restrict Terraform deployed resources to a list of allowed instance types on Amazon Web Services (AWS) as well as other cloud best practices. The policies that are contained in this library are based on the latest [performance and benchmarking tests](https://www.intel.com/content/www/us/en/developer/topic-technology/cloud/cloud-performance.html?f:@stm_10381_en=%5BAmazon%20Web%20Services%5D) from Intel. Terraform Cloud and Enterprise users can use the policies in this library to enable intelligent developer decisions when deploying cloud infrastructure by *advising* developers of more optimal instance types for their Terraform resources. 
+This library provides prescriptive Sentinel policies that restrict Terraform deployed resources to a list of allowed instance types on Amazon Web Services (AWS) as well as other cloud best practices. The policies that are contained in this library are based on the latest [performance and benchmarking tests](https://www.intel.com/content/www/us/en/developer/topic-technology/cloud/cloud-performance.html?f:@stm_10381_en=%5BAmazon%20Web%20Services%5D) from Intel. Terraform Cloud and Enterprise users can use the policies in this library to enable intelligent developer decisions when deploying cloud infrastructure by *advising* developers of more optimal instance types for their Terraform resources or creating *mandatory* enforcements to control costs and create predictable and standardized infrastructure. 
 
 ## Getting Started
 
@@ -30,12 +30,10 @@ See https://developer.hashicorp.com/terraform/cloud-docs/policy-enforcement/mana
 If you are using the Terraform Registry you must add an import block to your `sentinel.hcl` file in order for these policies to function. Copy the code snippet below and paste it into your `sentinel.hcl` file:
 
 ```
-
 import "static" "approved" {
 source = "http::http://raw.githubusercontent.com/intel/policy-library-intel-aws/main/approved.json"
 format = "json"
 }
-
 ```
 
 ## How to Use
@@ -47,21 +45,17 @@ Intel policy libraries are designed by default to automatically use the latest l
 In order to modify the list of allowed instance types for a resource you must first change the sourcing of the `approved.json` in the `sentinel.hcl` to : 
 
 ```
-
 import "static" "approved" {
 source = "./approved.json"
 format = "json"
 }
-
 ```
 
 Then identify the relevant content within the `approved.json` file. Do this by browsing to the `intel-cloud-resource-unapproved-instance-type` policy you would like to modify in the `policies` folder. For this example, note the value *awsautoscaling* for `doc.allowed` to identify the section to modify: 
 
 ```
-
 doc = {
 "allowed":   approved.awsautoscaling,
-
 ```
 
 This will align to the section within the `approved.json` that this policy will use for it's list of allowed instance types. 
@@ -72,18 +66,14 @@ Intel offers an additional list of instances that can be used to maximize AI per
 
 Original Intel List:
 ```
-
 doc = {
 "allowed":   approved.awsautoscaling,
-
 ```
 
 AMX List for AI Workloads:
 ```
-
 doc = {
 "allowed":   amx.awsautoscaling,
-
 ```
 Note that the `amx.json` file is sourced remotely and will automatically update with new instances. This behavior and list can be modified. 
 
