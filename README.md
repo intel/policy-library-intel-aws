@@ -2,7 +2,7 @@
   <img src="https://github.com/intel/policy-library-intel-aws/blob/main/images/logo-classicblue-800px.png?raw=true" alt="Intel Logo" width="250"/>
 </p>
 
-# AWS Sentinel Policies - Intel Cloud Optimization Modules
+# AWS Sentinel Policies - Intel Optimized Cloud Modules
 
 © Copyright 2022, Intel Corporation
 
