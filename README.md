@@ -49,6 +49,12 @@ format = "json"
 
 ## How to Use
 
+**Sentinel Test**
+
+When using `sentinel test` in a remote directory against a policy that contains a `static import` (like the `deny-unapproved-instance-type` policies) additional commands ands arguments must be passed in order for the test to run successfuly. Use the following command or another like it to test policies in this repository : 
+
+`find . -name "*.sentinel" -type f -execdir sentinel test \;`
+
 **Customize Instance Lists**
 
 Intel policy libraries are designed by default to automatically use the latest list of recommended instance types provided by Intel for a given Terraform resource. This is acheived by using a remote source in the `sentinel.hcl` file for the `approved.json` located in the root of this repository. It is possible to modify both the list of allowed instance types and the behavior of automatically retriving new recommended instance lists. 
