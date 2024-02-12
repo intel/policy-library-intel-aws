@@ -51,7 +51,7 @@ format = "json"
 
 **Sentinel Test**
 
-When using `sentinel test` in a remote directory against a policy that contains a `static import` (like the `deny-unapproved-instance-type` policies) additional commands ands arguments must be passed in order for the test to run successfuly. Use the following command or another like it to test policies in this repository : 
+When using `sentinel test` in a remote directory against a policy that contains a `static import` (like the `deny-unapproved-instance-type` policies) additional commands and arguments must be passed in order for the test to run successfuly. Use the following command or another like it to test policies in this repository : 
 
 `find . -name "*.sentinel" -type f -execdir sentinel test \;`
 
