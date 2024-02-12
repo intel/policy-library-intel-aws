@@ -59,7 +59,7 @@ When using `sentinel test` in a remote directory against a policy that contains 
 
 Intel policy libraries are designed by default to automatically use the latest list of recommended instance types provided by Intel for a given Terraform resource. This is acheived by using a remote source in the `sentinel.hcl` file for the `approved.json` located in the root of this repository. It is possible to modify both the list of allowed instance types and the behavior of automatically retriving new recommended instance lists. 
 
-In order to modify the list of allowed instance types for a resource you must first change the sourcing of the `approved.json` in the `sentinel.hcl` to : 
+In order to modify the list of allowed instance types for a resource you must first change the sourcing of the `approved.json` in the `sentinel.hcl` to a localized copy of the file: 
 
 ```
 
