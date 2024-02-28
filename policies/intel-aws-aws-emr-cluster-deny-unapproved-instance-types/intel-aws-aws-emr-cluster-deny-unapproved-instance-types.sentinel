@@ -33,11 +33,12 @@ violators = filter all_resources as _, r {
 	all r.change.after.core_instance_fleet as _, core_instance_fleet {
 		any core_instance_fleet.instance_type_configs as _, instance_type_config {
 			instance_type_config.instance_type else [] not in doc.allowed
-		} or any r.change.after.master_instance_fleet as _, master_instance_fleet {
-			any master_instance_fleet.instance_type_configs as _, instance_type_config {
-				instance_type_config.instance_type else [] not in doc.allowed
+		} or
+			any r.change.after.master_instance_fleet as _, master_instance_fleet {
+				any master_instance_fleet.instance_type_configs as _, instance_type_config {
+					instance_type_config.instance_type else [] not in doc.allowed
+				}
 			}
-		}
 	}
 }
 
