@@ -5,7 +5,7 @@ mock "tfplan/v2" {
 }
 
 import "static" "approved" {
-  source = "../../approved.json"
+  source = "../../../../approved.json"
   format = "json"
 }
 

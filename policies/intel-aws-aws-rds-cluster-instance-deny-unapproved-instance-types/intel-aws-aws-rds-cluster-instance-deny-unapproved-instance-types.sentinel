@@ -9,15 +9,15 @@ param valid_actions default [
 ]
 
 doc = {
-	"allowed":   approved.awsautoscaling,
+	"allowed":   approved.awsrdscluster,
 	"category":  "Infrastructure (IaaS)",
-	"error":     " is not an allowed server type.",
-	"file_name": "intel-aws-autoscaling-group-deny-unapproved-instance-types.sentinel",
-	"name":      "kubernetes01",
-	"md_url":    "https://github.com/intel/terraform-intel-aws-eks/blob/main/policies.md",
-	"parameter": "instance_type",
+	"error":     " uses an instance_class that is not allowed.",
+	"file_name": "intel-aws-aws-rds-cluster-instance-deny-unapproved-instance-types.sentinel",
+	"name":      "intel-aws-aws-rds-cluster-instance-deny-unapproved-instance-types",
+	"md_url":    "https://github.com/intel/policy-library-intel-aws/blob/main/policies/policies.md",
+	"parameter": "instance_class",
 	"provider":  "hashicorp/aws",
-	"resource":  "aws_autoscaling_group",
+	"resource":  "aws_rds_cluster_instance",
 	"violation": "The configured server type should use an Intel Xeon 3rd Generation Scalable processor (code-named Ice Lake)",
 }
 
@@ -30,13 +30,7 @@ all_resources = filter tfplan.resource_changes as _, rc {
 
 // Filter resources that violate a given condition
 violators = filter all_resources as _, r {
-	all r.change.after.mixed_instances_policy as _, mixed_instance_policy {
-		all mixed_instance_policy.launch_template as _, launch_template {
-			any launch_template.override as _, override {
-				override.instance_type else [] not in doc.allowed
-			}
-		}
-	}
+	r.change.after.instance_class else [] not in doc.allowed
 }
 
 // Build a summary report
