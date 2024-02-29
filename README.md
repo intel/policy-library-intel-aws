@@ -10,6 +10,14 @@
 
 This library, provides prescriptive Sentinel policies that optimize Terraform deployed resources on Amazon Web Services (AWS). The policies that are contained in this library are based on the latest [performance and benchmarking tests](https://www.intel.com/content/www/us/en/developer/topic-technology/cloud/cloud-performance.html?f:@stm_10381_en=%5BAmazon%20Web%20Services%5D). Terraform Cloud and Enterprise users can use the policies in this library to enable intelligent developer decisions when deploying cloud infrastructure by choosing the best price for performance instance types for their cloud resources. 
 
+## How to Use
+
+### Sentinel Test
+
+When using sentinel test in a remote directory against a policy that contains a static import (like the `deny-unapproved-instance-type` policies) additional commands and arguments must be passed in order for the test to run successfully. Execute the following command or another like it to test policies at the root level of this repository :
+
+`find . -name "*.sentinel" -type f -execdir sentinel test \;`
+
 ## Getting Started
 
 To get started using these policies fork the AWS Policy Library from the github repository. This will ensure that all necessary components for the policies are included and allows you to easily stay up to date when new versions of the recommended instance list are released. 
