@@ -72,13 +72,13 @@ policy "intel-aws-launch-template-deny-unapproved-instance-types" {
   enforcement_level = "advisory"
 }
 
-policy "intel-aws-rds-cluster-instance-deny-unapproved-instance-types" {
-  source = "./policies/intel-aws-rds-cluster-instance-deny-unapproved-instance-types/intel-aws-rds-cluster-instance-deny-unapproved-instance-types.sentinel"
+policy "intel-aws-rds-cluster-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-rds-cluster-deny-unapproved-instance-types/intel-aws-rds-cluster-deny-unapproved-instance-types.sentinel"
   enforcement_level = "advisory"
 }
 
-policy "intel-aws-rds-cluster-deny-unapproved-instance-types" {
-  source = "./policies/intel-aws-rds-cluster-deny-unapproved-instance-types/intel-aws-rds-cluster-deny-unapproved-instance-types.sentinel"
+policy "intel-aws-rds-cluster-instance-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-rds-cluster-instance-deny-unapproved-instance-types/intel-aws-rds-cluster-instance-deny-unapproved-instance-types.sentinel"
   enforcement_level = "advisory"
 }
 
