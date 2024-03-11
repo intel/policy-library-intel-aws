@@ -47,6 +47,21 @@ policy "intel-aws-eks-node-group-deny-unapproved-instance-types" {
   enforcement_level = "advisory"
 }
 
+policy "intel-aws-elasticache-replication-group-unapproved-instance-types" {
+  source = "./policies/intel-aws-elasticache-replication-group-unapproved-instance-types/intel-aws-elasticache-replication-group-unapproved-instance-types.sentinel"
+  enforcement_level = "advisory"
+}
+
+policy "intel-aws-emr-cluster-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-emr-cluster-deny-unapproved-instance-types/intel-aws-emr-cluster-deny-unapproved-instance-types.sentinel"
+  enforcement_level = "advisory"
+}
+
+policy "intel-aws-emr-instance-fleet-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-emr-instance-fleet-deny-unapproved-instance-types/intel-aws-emr-instance-fleet-deny-unapproved-instance-types.sentinel"
+  enforcement_level = "advisory"
+}
+
 policy "intel-aws-instance-deny-unapproved-instance-types" {
   source = "./policies/intel-aws-instance-deny-unapproved-instance-types/intel-aws-instance-deny-unapproved-instance-types.sentinel"
   enforcement_level = "advisory"
@@ -57,7 +72,18 @@ policy "intel-aws-launch-template-deny-unapproved-instance-types" {
   enforcement_level = "advisory"
 }
 
+policy "intel-aws-rds-cluster-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-rds-cluster-deny-unapproved-instance-types/intel-aws-rds-cluster-deny-unapproved-instance-types.sentinel"
+  enforcement_level = "advisory"
+}
+
+policy "intel-aws-rds-cluster-instance-deny-unapproved-instance-types" {
+  source = "./policies/intel-aws-rds-cluster-instance-deny-unapproved-instance-types/intel-aws-rds-cluster-instance-deny-unapproved-instance-types.sentinel"
+  enforcement_level = "advisory"
+}
+
 policy "intel-aws-sagemaker-endpoint-configuration-deny-unapproved-instance-types" {
   source = "./policies/intel-aws-sagemaker-endpoint-configuration-deny-unapproved-instance-types/intel-aws-sagemaker-endpoint-configuration-deny-unapproved-instance-types.sentinel"
   enforcement_level = "advisory"
 }
+
