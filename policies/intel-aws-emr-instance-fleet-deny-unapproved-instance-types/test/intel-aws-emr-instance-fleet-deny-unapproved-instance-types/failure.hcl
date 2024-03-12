@@ -5,12 +5,12 @@ mock "tfplan/v2" {
 }
 
 import "static" "approved" {
-  source = "../../../../../imports/static/approvedinstances.json"
+  source = "../../../../approved.json"
   format = "json"
 }
 
 import "module" "policy_summary" {
-  source = "../../../../../imports/modules/policy_summary.sentinel"
+  source = "../../../../modules/policysummary.sentinel"
 }
 
 test {
