@@ -41,3 +41,4 @@ jobs:
       - name: Sentinel Test
         run: find . -name "*.sentinel" -type f ! -path "*/testdata/*" -execdir sentinel test \;
         
+        
